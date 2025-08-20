@@ -12,7 +12,8 @@ export function Header() {
           alt="Ornamental decoration" 
           className="max-w-xs h-auto" 
           style={{ 
-            filter: 'invert(1)'
+            filter: 'invert(1)',
+            transform: 'rotate(180deg)'
           }}
         />
       </div>
