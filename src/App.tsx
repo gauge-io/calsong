@@ -15,8 +15,8 @@ export function App() {
           <img 
             src="/franklin-park-halloween-2025.png" 
             alt="Franklin Park Halloween 2025" 
-            className="max-w-full h-auto" 
-            style={{ filter: 'invert(1)' }}
+            className="h-auto" 
+            style={{ width: '60%', maxWidth: '100%' }}
           />
         </div>
         

@@ -1,6 +1,9 @@
 import React from 'react';
 export function EventInfo() {
-  return <section className="mb-12 grid md:grid-cols-2 gap-8 items-start">
+  return <section className="mb-12 grid md:grid-cols-2 gap-8 items-stretch">
+      <div className="flex items-center">
+        <img src="/skeleton-musician-optimized.png" alt="Skeleton musician illustration" className="w-full h-full object-contain border-5 border-white" />
+      </div>
       <div>
         <h2 className="text-2xl font-bold mb-4">About the Event</h2>
         <ul className="space-y-4 text-lg">
@@ -33,9 +36,6 @@ export function EventInfo() {
             </span>
           </li>
         </ul>
-      </div>
-      <div className="flex justify-center">
-        <img src="/skeleton-musician-optimized.png" alt="Skeleton musician illustration" className="max-w-full h-auto max-h-96 border-5 border-white" />
       </div>
     </section>;
 }
