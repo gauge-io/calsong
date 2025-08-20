@@ -6,5 +6,16 @@ export function Header() {
         SPONSORSHIP OPPORTUNITIES
       </h1>
       <p className="text-xl italic">Alameda's Newest Halloween Tradition</p>
+      <div className="flex justify-center mt-4">
+        <img 
+          src="/ornamental-suns.png" 
+          alt="Ornamental decoration" 
+          className="max-w-xs h-auto" 
+          style={{ 
+            filter: 'invert(1)',
+            transform: 'rotate(180deg)'
+          }}
+        />
+      </div>
     </header>;
 }
