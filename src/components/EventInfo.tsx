@@ -1,8 +1,8 @@
 import React from 'react';
 export function EventInfo() {
   return <section className="mb-12 grid md:grid-cols-2 gap-8 items-stretch">
-      <div className="flex items-center">
-        <img src="/skeleton-musician-optimized.png" alt="Skeleton musician illustration" className="w-full h-full object-contain border-5 border-white" />
+      <div className="flex items-center justify-center">
+        <img src="/skeleton-musician-optimized.png" alt="Skeleton musician illustration" className="object-contain border-5 border-white" style={{ width: '30%', height: 'auto' }} />
       </div>
       <div>
         <h2 className="text-2xl font-bold mb-4">About the Event</h2>
@@ -10,7 +10,7 @@ export function EventInfo() {
           <li className="flex items-start">
             <span className="mr-3 text-2xl">💀</span>
             <span>
-              CalSong, an Alameda arts non-profit, is bringing Halloween to Franklin Park 
+              CalSong, an Alameda arts non-profit (EIN 32-0667438), is bringing Halloween to Franklin Park 
               with a community celebration on Friday, October 31st, 2025.
             </span>
           </li>
