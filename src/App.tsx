@@ -9,7 +9,30 @@ export function App() {
         <Header />
         <EventInfo />
         <SponsorshipTiers />
+        
+        {/* Franklin Park Halloween 2025 Image */}
+        <div className="my-16 flex justify-center">
+          <img 
+            src="/franklin-park-halloween-2025.png" 
+            alt="Franklin Park Halloween 2025" 
+            className="max-w-full h-auto" 
+            style={{ filter: 'invert(1)' }}
+          />
+        </div>
+        
         <ContactSection />
+        
+        {/* Footer with Ornamental Suns */}
+        <footer className="mt-16 pb-8">
+          <div className="flex justify-center">
+            <img 
+              src="/ornamental-suns.png" 
+              alt="Ornamental decoration" 
+              className="max-w-xs h-auto" 
+              style={{ filter: 'invert(1)' }}
+            />
+          </div>
+        </footer>
       </div>
     </div>;
 }

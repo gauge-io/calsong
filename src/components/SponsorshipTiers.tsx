@@ -26,12 +26,6 @@ export function SponsorshipTiers() {
         {tiers.map((tier, index) => <SponsorCard key={index} title={tier.title} price={tier.price} benefits={tier.benefits} featured={tier.featured} url={tier.url} />)}
       </div>
       <div className="mt-12 text-center">
-        <p className="mb-4 text-lg">
-          The neighborhood surrounding Franklin Park is in the middle of some of
-          the highest real-estate values on all of the island – solidifying your
-          association with these neighbors and this community will surely pay
-          dividends year round.
-        </p>
         <p className="text-xl font-bold">
           Join us as partners to help launch this annual tradition.
         </p>

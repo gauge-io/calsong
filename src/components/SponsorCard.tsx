@@ -13,7 +13,7 @@ export function SponsorCard({
   featured = false,
   url
 }: SponsorCardProps) {
-  return <div className={`border-2 ${featured ? 'border-orange-500' : 'border-gray-600'} rounded-lg p-6 flex flex-col h-full transition-transform hover:scale-105`}>
+  return <div className={`border-2 ${featured ? 'border-orange-500' : 'border-gray-600'} rounded-lg p-6 flex flex-col h-full bg-gray-900 hover:bg-gray-800 transition-all hover:scale-105`}>
       <div className={`text-center mb-6 pb-4 ${featured ? 'border-b-2 border-orange-500' : 'border-b border-gray-600'}`}>
         <h3 className={`text-2xl font-bold mb-2 ${featured ? 'text-orange-500' : ''}`}>
           {title}
