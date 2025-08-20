@@ -12,12 +12,20 @@ export function App() {
         
         {/* Franklin Park Halloween 2025 Image */}
         <div className="my-16 flex justify-center">
-          <img 
-            src="/franklin-park-halloween-2025.png" 
-            alt="Franklin Park Halloween 2025" 
-            className="max-w-full h-auto" 
-            style={{ filter: 'invert(1)' }}
-          />
+          <div className="text-center">
+            <img 
+              src="/franklin-park-halloween-2025.png" 
+              alt="Franklin Park Halloween 2025" 
+              className="max-w-full h-auto" 
+              style={{ filter: 'invert(1)' }}
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement?.insertAdjacentHTML('afterbegin', 
+                  '<p class="text-gray-500 italic">Franklin Park Halloween 2025 image placeholder</p>'
+                );
+              }}
+            />
+          </div>
         </div>
         
         <ContactSection />
@@ -25,12 +33,20 @@ export function App() {
         {/* Footer with Ornamental Suns */}
         <footer className="mt-16 pb-8">
           <div className="flex justify-center">
-            <img 
-              src="/ornamental-suns.png" 
-              alt="Ornamental decoration" 
-              className="max-w-xs h-auto" 
-              style={{ filter: 'invert(1)' }}
-            />
+            <div className="text-center">
+              <img 
+                src="/ornamental-suns.png" 
+                alt="Ornamental decoration" 
+                className="max-w-xs h-auto" 
+                style={{ filter: 'invert(1)' }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement?.insertAdjacentHTML('afterbegin', 
+                    '<p class="text-gray-500 italic">Ornamental suns image placeholder</p>'
+                  );
+                }}
+              />
+            </div>
           </div>
         </footer>
       </div>
