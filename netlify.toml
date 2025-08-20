@@ -1,0 +1,11 @@
+[[redirects]]
+  from = "/sponsor"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/sponsors"
+  to = "/"
+  status = 301
+  force = true
