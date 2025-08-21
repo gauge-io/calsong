@@ -510,25 +510,27 @@
                 mapGroup = new H.map.Group();
                 map.addObject(mapGroup);
 
-                // Add starting point marker
+                // Add start/finish point marker (round trip)
                 const startIcon = new H.map.Icon('data:image/svg+xml;base64,' + btoa(`
-                    <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="15" cy="15" r="12" fill="#ff4444" stroke="white" stroke-width="3"/>
-                        <text x="15" y="20" text-anchor="middle" fill="white" font-family="IBM Plex Sans, sans-serif" font-weight="bold" font-size="14">S</text>
+                    <svg width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="18" cy="18" r="16" fill="#ff4444" stroke="white" stroke-width="3"/>
+                        <text x="18" y="15" text-anchor="middle" fill="white" font-family="IBM Plex Sans, sans-serif" font-weight="bold" font-size="10">START</text>
+                        <text x="18" y="25" text-anchor="middle" fill="white" font-family="IBM Plex Sans, sans-serif" font-weight="bold" font-size="10">FINISH</text>
                     </svg>
-                `), {size: {w: 30, h: 30}});
+                `), {size: {w: 36, h: 36}});
 
                 const startMarker = new H.map.Marker(
                     {lat: STARTING_POINT.lat, lng: STARTING_POINT.lng},
-                    {icon: startIcon}
+                    {icon: startIcon, zIndex: 1000} // Higher z-index to keep it on top
                 );
                 
-                // Add info bubble for start marker
+                // Add info bubble for start/finish marker
                 startMarker.addEventListener('tap', function(evt) {
                     const bubble = new H.ui.InfoBubble({lat: STARTING_POINT.lat, lng: STARTING_POINT.lng}, {
                         content: `<div style="font-family: 'IBM Plex Sans', sans-serif;">
-                            <strong>${STARTING_POINT.name}</strong><br/>
-                            ${STARTING_POINT.address}
+                            <strong>Start/Finish Point</strong><br/>
+                            ${STARTING_POINT.address}<br/>
+                            <em>Round trip begins and ends here</em>
                         </div>`
                     });
                     ui.addBubble(bubble);
@@ -738,11 +740,11 @@
             }
         }
 
-        // Optimize sequence using nearest neighbor + 2-opt
+        // Optimize sequence using nearest neighbor + 2-opt for round trip
         function optimizeSequence(businesses) {
-            debugLog('Optimizing sequence...');
+            debugLog('Optimizing round-trip sequence...');
             
-            // Nearest neighbor
+            // Nearest neighbor considering return to start
             let route = [];
             const unvisited = [...businesses];
             let current = STARTING_POINT;
@@ -751,35 +753,55 @@
                 let nearestIndex = 0;
                 let nearestDistance = Infinity;
 
-                unvisited.forEach((business, index) => {
-                    const distance = getDistance(current, business);
-                    if (distance < nearestDistance) {
-                        nearestDistance = distance;
-                        nearestIndex = index;
-                    }
-                });
+                // If this is the last business, consider distance back to start
+                if (unvisited.length === 1) {
+                    nearestIndex = 0;
+                } else {
+                    unvisited.forEach((business, index) => {
+                        const distance = getDistance(current, business);
+                        // Add a small penalty for businesses far from the starting point
+                        // when we have few businesses left (to avoid ending far from start)
+                        if (unvisited.length <= 3) {
+                            const returnDistance = getDistance(business, STARTING_POINT);
+                            const weightedDistance = distance + (returnDistance * 0.3);
+                            if (weightedDistance < nearestDistance) {
+                                nearestDistance = weightedDistance;
+                                nearestIndex = index;
+                            }
+                        } else {
+                            if (distance < nearestDistance) {
+                                nearestDistance = distance;
+                                nearestIndex = index;
+                            }
+                        }
+                    });
+                }
 
                 current = unvisited[nearestIndex];
                 route.push(current);
                 unvisited.splice(nearestIndex, 1);
             }
 
-            // 2-opt optimization
+            // 2-opt optimization for round trip (including return to start)
             let improved = true;
             let iterations = 0;
             
+            // Create full round trip for optimization
+            const fullRoute = [STARTING_POINT, ...route, STARTING_POINT];
+            
             while (improved && iterations < 30) {
                 improved = false;
-                for (let i = 1; i < route.length - 2; i++) {
-                    for (let j = i + 1; j < route.length - 1; j++) {
-                        const currentDist = getDistance(route[i - 1], route[i]) + 
-                                          getDistance(route[j], route[j + 1]);
-                        const newDist = getDistance(route[i - 1], route[j]) + 
-                                       getDistance(route[i], route[j + 1]);
+                // Note: We don't swap the starting/ending point
+                for (let i = 1; i < fullRoute.length - 2; i++) {
+                    for (let j = i + 1; j < fullRoute.length - 1; j++) {
+                        const currentDist = getDistance(fullRoute[i - 1], fullRoute[i]) + 
+                                          getDistance(fullRoute[j], fullRoute[j + 1]);
+                        const newDist = getDistance(fullRoute[i - 1], fullRoute[j]) + 
+                                       getDistance(fullRoute[i], fullRoute[j + 1]);
                         
                         if (newDist < currentDist) {
-                            const reversed = route.slice(i, j + 1).reverse();
-                            route.splice(i, j - i + 1, ...reversed);
+                            const reversed = fullRoute.slice(i, j + 1).reverse();
+                            fullRoute.splice(i, j - i + 1, ...reversed);
                             improved = true;
                         }
                     }
@@ -787,7 +809,17 @@
                 iterations++;
             }
             
-            return route;
+            // Remove starting points from optimized route (they'll be added back in updateRoute)
+            const optimizedRoute = fullRoute.slice(1, -1);
+            
+            // Calculate and log total distance
+            let totalDistance = 0;
+            for (let i = 0; i < fullRoute.length - 1; i++) {
+                totalDistance += getDistance(fullRoute[i], fullRoute[i + 1]);
+            }
+            debugLog(`Optimized round-trip distance: ${totalDistance.toFixed(2)} miles`);
+            
+            return optimizedRoute;
         }
 
         // Calculate distance
