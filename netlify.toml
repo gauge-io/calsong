@@ -16,3 +16,15 @@
   to = "/"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/route"
+  to = "/route.html"
+  status = 200
+  force = false
+
+[[headers]]
+  for = "/route.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"

@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>BATB Addresses - Sheet7.csv</name>
+    <Style id="icon-1899-0288D1-normal">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-1899-0288D1-highlight">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-1899-0288D1">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1899-0288D1-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1899-0288D1-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>Embarc</name>
+      <address>475 Santa Clara Ave, Alameda, CA 94501</address>
+      <description>475 Santa Clara Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Fuzzy Caterpillar Preschool</name>
+      <address>1510 Encinal Ave, Alameda, CA 94501</address>
+      <description>1510 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Golden Needle Tailoring</name>
+      <address>1903 Encinal Ave, Alameda, CA 94501</address>
+      <description>1903 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>A-Town Productions</name>
+      <address>909 Marina Village Pkwy. Ste 357</address>
+      <description>909 Marina Village Pkwy. Ste 357</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Elks Lodge #1015</name>
+      <address>2255 Santa Clara Ave, Alameda, CA 94501</address>
+      <description>2255 Santa Clara Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>1701 Auto Care</name>
+      <address>1701 Buena Vista Ave, Alameda, CA 94501</address>
+      <description>1701 Buena Vista Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Municpal Power</name>
+      <address>2000 Grand St, Alameda, CA 94501</address>
+      <description>2000 Grand St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>A.T. Weber Plumbing</name>
+      <address>1100 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1100 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>A1 Market</name>
+      <address>1420 Encinal Ave, Alameda, CA 94501</address>
+      <description>1420 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Bicycle</name>
+      <address>1522 Park St, Alameda, CA 94501</address>
+      <description>1522 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Cards and Comics</name>
+      <address>1515 Webster St, Alameda, CA 94501</address>
+      <description>1515 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Post</name>
+      <address>1516 Oak St., Suite 203, Alameda, CA 94501</address>
+      <description>1516 Oak St., Suite 203, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Almanac Beer Co.</name>
+      <address>651 W Tower Ave, Alameda, CA 94501</address>
+      <description>651 W Tower Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>BAMP</name>
+      <address>2350 Saratoga St Unit 250, Alameda, CA 94501, USA</address>
+      <description>2350 Saratoga St Unit 250, Alameda, CA 94501, USA</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Alameda Theatre & Cineplex]]></name>
+      <address>2317 Central Ave, Alameda, CA 94501</address>
+      <description>2317 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Beaker’s Records</name>
+      <address>918 Central Ave Unit A, Alameda, CA 94501</address>
+      <description>918 Central Ave Unit A, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Fireside Lounge</name>
+      <address>1453 Webster St, Alameda, CA 94501</address>
+      <description>1453 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Forbidden Island</name>
+      <address>1304 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1304 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>High Scores Arcade</name>
+      <address>1414 Park St, Alameda, CA 94501</address>
+      <description>1414 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Highwire Coffee Roasters</name>
+      <address>1300 Park St, Alameda, CA 94501</address>
+      <description>1300 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Island Savoy</name>
+      <address>1200 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1200 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Lazybird Coffee</name>
+      <address>930 Central Ave, Alameda, CA 94501</address>
+      <description>930 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Ozzy's Music Academy]]></name>
+      <address>1323 Central Ave, Alameda, CA 94501</address>
+      <description>1323 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Norman Sanchez Archiecture</name>
+      <address>1151 Harbor Bay Pkwy # 206C, Alameda, CA 94502</address>
+      <description>1151 Harbor Bay Pkwy # 206C, Alameda, CA 94502</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Park Station</name>
+      <address>1200 Park St, Alameda, CA 94501</address>
+      <description>1200 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Red Tie Printing</name>
+      <address>741 Buena Vista Ave, Alameda, CA 94501</address>
+      <description>741 Buena Vista Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Rhythmix Cultural Works</name>
+      <address>2513 Blanding Ave, Alameda, CA 94501</address>
+      <description>2513 Blanding Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Rotary Club</name>
+      <address>1406 Morton Avenue, Alameda, CA 94501</address>
+      <description>1406 Morton Avenue, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Ruby's Tumbling]]></name>
+      <address>1102 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1102 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Salon 1500</name>
+      <address>1500 Encinal Ave, Alameda, CA 94501</address>
+      <description>1500 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Santoros Italian Market & Deli]]></name>
+      <address>475 Santa Clara Ave, Alameda, CA 94501</address>
+      <description>475 Santa Clara Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Team Schuler Real Estate</name>
+      <address>1414 Park Ave, Alameda, CA 94501</address>
+      <description>1414 Park Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Benton</name>
+      <address>1403 Encinal Ave, Alameda, CA 94501</address>
+      <description>1403 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Experience Share</name>
+      <address>1600 Sherman St, Alameda, CA 94501</address>
+      <description>1600 Sherman St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Gunderman Group</name>
+      <address>2437 Santa Clara Ave, Alameda, CA 94501</address>
+      <description>2437 Santa Clara Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Local</name>
+      <address>1333 Park St, Alameda, CA 94501</address>
+      <description>1333 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Trabocco Kitchen & Cocktails]]></name>
+      <address>2213 South Shore Center, Alameda, CA 94501</address>
+      <description>2213 South Shore Center, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Tucker’s Super Creamed Ice Cream</name>
+      <address>1349 Park St, Alameda, CA 94501</address>
+      <description>1349 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Village Kids Club</name>
+      <address>1102 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1102 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Westside Joes</name>
+      <address>1000 Central Ave, Alameda, CA 94501</address>
+      <description>1000 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[1400 Bar & Grill]]></name>
+      <address>1400 Webster St, Alameda, CA 94501</address>
+      <description>1400 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[A & T Bookkeeping & Tax Services]]></name>
+      <address>1336 Weber St, Alameda, CA 94501</address>
+      <description>1336 Weber St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[A & T House Cleaning]]></name>
+      <address>647 Haight Ave, Alameda, CA 94501</address>
+      <description>647 Haight Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>A B C Preschool</name>
+      <address>1525 Bay St, Alameda, CA 94501</address>
+      <description>1525 Bay St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Admiral Maltings</name>
+      <address>651 W Tower Ave, Alameda, CA 94501</address>
+      <description>651 W Tower Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Alameda Bagels & Donuts]]></name>
+      <address>1300 Park St, Alameda, CA 94501</address>
+      <description>1300 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Floral Design</name>
+      <address>1908 Encinal Ave, Alameda, CA 94501</address>
+      <description>1908 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Golf Works</name>
+      <address>1710 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1710 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Alameda Museum</name>
+      <address>2329 Central Ave, Alameda, CA 94501</address>
+      <description>2329 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Asena Restaurant</name>
+      <address>2500 Santa Clara Ave, Alameda, CA 94501</address>
+      <description>2500 Santa Clara Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Bead Inspirations</name>
+      <address>1544 Park St, Alameda, CA 94501</address>
+      <description>1544 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Beadissimo</name>
+      <address>1318 Park St, Alameda, CA 94501</address>
+      <description>1318 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Blue Dot Cafe</name>
+      <address>1910 Encinal Ave, Alameda, CA 94501</address>
+      <description>1910 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Books Inc.</name>
+      <address>1344 Park St, Alameda, CA 94501</address>
+      <description>1344 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Café Jolie</name>
+      <address>1500 Webster St, Alameda, CA 94501</address>
+      <description>1500 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Chestnut Encinal Market</name>
+      <address>1202 Chestnut St, Alameda, CA 94501</address>
+      <description>1202 Chestnut St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Craft Chocolate</name>
+      <address>1118 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1118 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Croll's Pizza]]></name>
+      <address>1454 Webster St, Alameda, CA 94501</address>
+      <description>1454 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Dan’s Fresh Produce</name>
+      <address>2300 Central Ave, Alameda, CA 94501</address>
+      <description>2300 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Doodlebug</name>
+      <address>1234 Park St, Alameda, CA 94501</address>
+      <description>1234 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Dragon Rouge</name>
+      <address>2337 Blanding Ave, Alameda, CA 94501</address>
+      <description>2337 Blanding Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>East End Pizza</name>
+      <address>1650 Park St, Alameda, CA 94501</address>
+      <description>1650 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>El Caballo Wraps</name>
+      <address>1108 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1108 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Farmstead Cheeses and Wines</name>
+      <address>1650 Park St, Alameda, CA 94501</address>
+      <description>1650 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Frank Logan Barbershop</name>
+      <address>928 Central Ave #A, Alameda, CA 94501</address>
+      <description>928 Central Ave #A, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Gold Coast Coffee</name>
+      <address>1340 Park St, Alameda, CA 94501</address>
+      <description>1340 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Gold Coast Real Estate</name>
+      <address>1300 Encinal Ave, Alameda, CA 94501</address>
+      <description>1300 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Jay's Coffee and Treats]]></name>
+      <address>1414 Encinal Ave, Alameda, CA 94501</address>
+      <description>1414 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Jim's Coffee Shop]]></name>
+      <address>1333 Park St, Alameda, CA 94501</address>
+      <description>1333 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Juan's Barbershop]]></name>
+      <address>1201a Lincoln Ave, Alameda, CA 94501</address>
+      <description>1201a Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Julie's Coffee Shop]]></name>
+      <address>1223 Park St, Alameda, CA 94501</address>
+      <description>1223 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Marti's Place]]></name>
+      <address>1905 1/2 Encinal Ave, Alameda, CA 94501</address>
+      <description>1905 1/2 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[McGee's Bar & Grill]]></name>
+      <address>1640 Park St, Alameda, CA 94501</address>
+      <description>1640 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Mosley’s Cafe</name>
+      <address>2099 Grand St, Alameda, CA 94501</address>
+      <description>2099 Grand St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Neptune Beach Brewing Co.</name>
+      <address>1300 Park St, Alameda, CA 94501</address>
+      <description>1300 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Neptune's Net Seafood]]></name>
+      <address>1900 Webster St, Alameda, CA 94501</address>
+      <description>1900 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Ole’s Waffle Shop</name>
+      <address>1507 Park St, Alameda, CA 94501</address>
+      <description>1507 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Pacific Pinball Museum</name>
+      <address>1510 Webster St, Alameda, CA 94501</address>
+      <description>1510 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Park Social</name>
+      <address>1222 Park St, Alameda, CA 94501</address>
+      <description>1222 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Parkway Auto Repair</name>
+      <address>2100 Encinal Ave, Alameda, CA 94501</address>
+      <description>2100 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Penumbra</name>
+      <address>One Penumbra Place Alameda, CA 94502</address>
+      <description>One Penumbra Place Alameda, CA 94502</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Preferred Properties</name>
+      <address>1914 Encinal Ave, Alameda, CA 94501</address>
+      <description>1914 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Scolari’s Kitchen</name>
+      <address>1303 Park St, Alameda, CA 94501</address>
+      <description>1303 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Semifreddi's Bakery]]></name>
+      <address>2715 Pacific Ave, Alameda, CA 94501</address>
+      <description>2715 Pacific Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Speisekammer</name>
+      <address>2424 Lincoln Ave, Alameda, CA 94501</address>
+      <description>2424 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Star Market</name>
+      <address>1336 Park St, Alameda, CA 94501</address>
+      <description>1336 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Sunclean Carpet Care</name>
+      <address>2021 San Antonio Ave, Alameda, CA 94501</address>
+      <description>2021 San Antonio Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Beanery</name>
+      <address>1650 Park St, Alameda, CA 94501</address>
+      <description>1650 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Star on Park</name>
+      <address>1400 Park St, Alameda, CA 94501</address>
+      <description>1400 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>The Thrifty Kitty</name>
+      <address>1509 Webster St, Alameda, CA 94501</address>
+      <description>1509 Webster St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Toy Safari</name>
+      <address>1410 Park St, Alameda, CA 94501</address>
+      <description>1410 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Troy Greek Cuisine</name>
+      <address>2320 Central Ave, Alameda, CA 94501</address>
+      <description>2320 Central Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Tutu School Alameda</name>
+      <address>1419 Park St Unit H, Alameda, CA 94501</address>
+      <description>1419 Park St Unit H, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Twirl</name>
+      <address>1424 Park St, Alameda, CA 94501</address>
+      <description>1424 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Twist</name>
+      <address>1906 Encinal Ave, Alameda, CA 94501</address>
+      <description>1906 Encinal Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Whisk Cake Creations</name>
+      <address>1216 Lincoln Ave, Alameda, CA 94501</address>
+      <description>1216 Lincoln Ave, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Whiz Kids</name>
+      <address>1335 Park St, Alameda, CA 94501</address>
+      <description>1335 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name><![CDATA[Kat's Meow]]></name>
+      <address>1519 Park St, Alameda, CA 94501</address>
+      <description>1519 Park St, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Phoenix Coworking</name>
+      <address>2315 Lincoln Ave Unit 2, Alameda, CA 94501</address>
+      <description>2315 Lincoln Ave Unit 2, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Digifli</name>
+      <address>1516 Oak St #203, Alameda, CA 94501</address>
+      <description>1516 Oak St #203, Alameda, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Three Weeks Barbershop</name>
+      <address>1913 BROADWAY SUITE A ALAMEDA, CA 94501</address>
+      <description>1913 BROADWAY SUITE A ALAMEDA, CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+    <Placemark>
+      <name>Village Voyagers</name>
+      <address>1011 Grand Street, Alameda CA 94501</address>
+      <description>1011 Grand Street, Alameda CA 94501</description>
+      <styleUrl>#icon-1899-0288D1</styleUrl>
+    </Placemark>
+  </Document>
+</kml>

@@ -1,0 +1,410 @@
+[
+  {
+    "name": "Embarc",
+    "address": "475 Santa Clara Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Fuzzy Caterpillar Preschool",
+    "address": "1510 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Golden Needle Tailoring",
+    "address": "1903 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "A-Town Productions",
+    "address": "909 Marina Village Pkwy. Ste 357"
+  },
+  {
+    "name": "Alameda Elks Lodge #1015",
+    "address": "2255 Santa Clara Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "1701 Auto Care",
+    "address": "1701 Buena Vista Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Municpal Power",
+    "address": "2000 Grand St, Alameda, CA 94501"
+  },
+  {
+    "name": "A.T. Weber Plumbing",
+    "address": "1100 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "A1 Market",
+    "address": "1420 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Bicycle",
+    "address": "1522 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Cards and Comics",
+    "address": "1515 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Post",
+    "address": "1516 Oak St., Suite 203, Alameda, CA 94501"
+  },
+  {
+    "name": "Almanac Beer Co.",
+    "address": "651 W Tower Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "BAMP",
+    "address": "2350 Saratoga St Unit 250, Alameda, CA 94501, USA"
+  },
+  {
+    "name": "Alameda Theatre & Cineplex",
+    "address": "2317 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Beaker’s Records",
+    "address": "918 Central Ave Unit A, Alameda, CA 94501"
+  },
+  {
+    "name": "Fireside Lounge",
+    "address": "1453 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Forbidden Island",
+    "address": "1304 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "High Scores Arcade",
+    "address": "1414 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Highwire Coffee Roasters",
+    "address": "1300 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Island Savoy",
+    "address": "1200 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Lazybird Coffee",
+    "address": "930 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Ozzy's Music Academy",
+    "address": "1323 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Norman Sanchez Archiecture",
+    "address": "1151 Harbor Bay Pkwy # 206C, Alameda, CA 94502"
+  },
+  {
+    "name": "Park Station",
+    "address": "1200 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Red Tie Printing",
+    "address": "741 Buena Vista Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Rhythmix Cultural Works",
+    "address": "2513 Blanding Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Rotary Club",
+    "address": "1406 Morton Avenue, Alameda, CA 94501"
+  },
+  {
+    "name": "Ruby's Tumbling",
+    "address": "1102 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Salon 1500",
+    "address": "1500 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Santoros Italian Market & Deli",
+    "address": "475 Santa Clara Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Team Schuler Real Estate",
+    "address": "1414 Park Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "The Benton",
+    "address": "1403 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "The Experience Share",
+    "address": "1600 Sherman St, Alameda, CA 94501"
+  },
+  {
+    "name": "The Gunderman Group",
+    "address": "2437 Santa Clara Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "The Local",
+    "address": "1333 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Trabocco Kitchen & Cocktails",
+    "address": "2213 South Shore Center, Alameda, CA 94501"
+  },
+  {
+    "name": "Tucker’s Super Creamed Ice Cream",
+    "address": "1349 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Village Kids Club",
+    "address": "1102 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Westside Joes",
+    "address": "1000 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "1400 Bar & Grill",
+    "address": "1400 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "A & T Bookkeeping & Tax Services",
+    "address": "1336 Weber St, Alameda, CA 94501"
+  },
+  {
+    "name": "A & T House Cleaning",
+    "address": "647 Haight Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "A B C Preschool",
+    "address": "1525 Bay St, Alameda, CA 94501"
+  },
+  {
+    "name": "Admiral Maltings",
+    "address": "651 W Tower Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Bagels & Donuts",
+    "address": "1300 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Floral Design",
+    "address": "1908 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Golf Works",
+    "address": "1710 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Alameda Museum",
+    "address": "2329 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Asena Restaurant",
+    "address": "2500 Santa Clara Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Bead Inspirations",
+    "address": "1544 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Beadissimo",
+    "address": "1318 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Blue Dot Cafe",
+    "address": "1910 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Books Inc.",
+    "address": "1344 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Café Jolie",
+    "address": "1500 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Chestnut Encinal Market",
+    "address": "1202 Chestnut St, Alameda, CA 94501"
+  },
+  {
+    "name": "Craft Chocolate",
+    "address": "1118 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Croll's Pizza",
+    "address": "1454 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Dan’s Fresh Produce",
+    "address": "2300 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Doodlebug",
+    "address": "1234 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Dragon Rouge",
+    "address": "2337 Blanding Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "East End Pizza",
+    "address": "1650 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "El Caballo Wraps",
+    "address": "1108 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Farmstead Cheeses and Wines",
+    "address": "1650 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Frank Logan Barbershop",
+    "address": "928 Central Ave #A, Alameda, CA 94501"
+  },
+  {
+    "name": "Gold Coast Coffee",
+    "address": "1340 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Gold Coast Real Estate",
+    "address": "1300 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Jay's Coffee and Treats",
+    "address": "1414 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Jim's Coffee Shop",
+    "address": "1333 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Juan's Barbershop",
+    "address": "1201a Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Julie's Coffee Shop",
+    "address": "1223 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Marti's Place",
+    "address": "1905 1/2 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "McGee's Bar & Grill",
+    "address": "1640 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Mosley’s Cafe",
+    "address": "2099 Grand St, Alameda, CA 94501"
+  },
+  {
+    "name": "Neptune Beach Brewing Co.",
+    "address": "1300 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Neptune's Net Seafood",
+    "address": "1900 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Ole’s Waffle Shop",
+    "address": "1507 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Pacific Pinball Museum",
+    "address": "1510 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Park Social",
+    "address": "1222 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Parkway Auto Repair",
+    "address": "2100 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Penumbra",
+    "address": "One Penumbra Place Alameda, CA 94502"
+  },
+  {
+    "name": "Preferred Properties",
+    "address": "1914 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Scolari’s Kitchen",
+    "address": "1303 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Semifreddi's Bakery",
+    "address": "2715 Pacific Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Speisekammer",
+    "address": "2424 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Star Market",
+    "address": "1336 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Sunclean Carpet Care",
+    "address": "2021 San Antonio Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "The Beanery",
+    "address": "1650 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "The Star on Park",
+    "address": "1400 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "The Thrifty Kitty",
+    "address": "1509 Webster St, Alameda, CA 94501"
+  },
+  {
+    "name": "Toy Safari",
+    "address": "1410 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Troy Greek Cuisine",
+    "address": "2320 Central Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Tutu School Alameda",
+    "address": "1419 Park St Unit H, Alameda, CA 94501"
+  },
+  {
+    "name": "Twirl",
+    "address": "1424 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Twist",
+    "address": "1906 Encinal Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Whisk Cake Creations",
+    "address": "1216 Lincoln Ave, Alameda, CA 94501"
+  },
+  {
+    "name": "Whiz Kids",
+    "address": "1335 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Kat's Meow",
+    "address": "1519 Park St, Alameda, CA 94501"
+  },
+  {
+    "name": "Phoenix Coworking",
+    "address": "2315 Lincoln Ave Unit 2, Alameda, CA 94501"
+  },
+  {
+    "name": "Digifli",
+    "address": "1516 Oak St #203, Alameda, CA 94501"
+  },
+  {
+    "name": "Three Weeks Barbershop",
+    "address": "1913 BROADWAY SUITE A ALAMEDA, CA 94501"
+  },
+  {
+    "name": "Village Voyagers",
+    "address": "1011 Grand Street, Alameda CA 94501"
+  }
+]

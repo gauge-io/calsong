@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalsOng Bicycle Route Optimizer - HERE v8 API</title>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            margin: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+        #map {
+            height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .range-value {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+        .business-list {
+            margin-top: 20px;
+        }
+        .business-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .business-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .debug-panel {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #00ff00;
+        }
+        .debug-log {
+            margin-bottom: 5px;
+        }
+        .debug-log.error { color: #ff4444; }
+        .debug-log.success { color: #44ff44; }
+        .debug-log.warning { color: #ffaa00; }
+        .timestamp { color: #888; margin-right: 10px; }
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .loader.active {
+            display: block;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚴 CalsOng Bicycle Route Optimizer - HERE v8 API</h1>
+            <div id="status" class="status loading">Initializing...</div>
+        </div>
+
+        <div class="main-content">
+            <div id="map"></div>
+            
+            <div class="sidebar">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Stops</div>
+                        <div class="stat-value" id="totalStops">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Distance</div>
+                        <div class="stat-value" id="totalDistance">0 mi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="totalTime">0 min</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Calories</div>
+                        <div class="stat-value" id="calories">0</div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="businessCount">Number of Businesses</label>
+                        <input type="range" id="businessCount" min="2" max="20" value="5">
+                        <div class="range-value" id="businessCountValue">5</div>
+                    </div>
+                    <button id="optimizeBtn" onclick="optimizeRoute()">Optimize Route</button>
+                </div>
+
+                <div class="loader" id="loader">
+                    <div class="spinner"></div>
+                    <p>Calculating optimal route...</p>
+                </div>
+
+                <div class="business-list">
+                    <h3>Route Stops</h3>
+                    <div id="businessList">Loading businesses...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="debug-panel">
+            <div id="debugLogs"></div>
+        </div>
+    </div>
+
+    <script>
+        // HERE API Key
+        const HERE_API_KEY = 'yspJL0vEr1fWGBLMsWcNSHjEu74qNQ8M5PYY3stYyO8';
+        
+        // Starting point
+        const STARTING_POINT = {
+            lat: 37.76713,
+            lng: -122.26021,
+            name: "Starting Point",
+            address: "1620 San Jose Avenue, Alameda, CA 94501"
+        };
+
+        let platform = null;
+        let map = null;
+        let businessData = [];
+        let geocodedBusinesses = [];
+        let mapGroup = null;
+        let routeLine = null;
+
+        // Debug logging
+        function debugLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugLogs = document.getElementById('debugLogs');
+            const logEntry = document.createElement('div');
+            logEntry.className = `debug-log ${type}`;
+            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+            debugLogs.insertBefore(logEntry, debugLogs.firstChild);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        // Update status
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+
+        // Initialize HERE Maps (for display only)
+        async function initMap() {
+            try {
+                debugLog('Initializing HERE Maps for display...');
+                
+                // Create platform with API key
+                platform = new H.service.Platform({
+                    'apikey': HERE_API_KEY
+                });
+
+                // Get default layers
+                const defaultLayers = platform.createDefaultLayers();
+
+                // Initialize map
+                map = new H.Map(
+                    document.getElementById('map'),
+                    defaultLayers.vector.normal.map,
+                    {
+                        zoom: 13,
+                        center: { lat: STARTING_POINT.lat, lng: STARTING_POINT.lng }
+                    }
+                );
+
+                // Add behavior and UI
+                const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                const ui = H.ui.UI.createDefault(map, defaultLayers);
+
+                // Create a group for markers
+                mapGroup = new H.map.Group();
+                map.addObject(mapGroup);
+
+                // Add starting point marker
+                const startIcon = new H.map.Icon('data:image/svg+xml;base64,' + btoa(`
+                    <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="15" cy="15" r="12" fill="#ff4444" stroke="white" stroke-width="3"/>
+                        <text x="15" y="20" text-anchor="middle" fill="white" font-weight="bold" font-size="14">S</text>
+                    </svg>
+                `), {size: {w: 30, h: 30}});
+
+                const startMarker = new H.map.Marker(
+                    {lat: STARTING_POINT.lat, lng: STARTING_POINT.lng},
+                    {icon: startIcon}
+                );
+                mapGroup.addObject(startMarker);
+
+                debugLog('Map initialized successfully!', 'success');
+                updateStatus('Map ready', 'success');
+                
+                // Load and geocode businesses
+                await loadBusinesses();
+                
+                // Auto-optimize with initial value
+                setTimeout(() => optimizeRoute(), 1000);
+                
+            } catch (error) {
+                debugLog(`Map initialization error: ${error.message}`, 'error');
+                updateStatus('Failed to initialize map', 'error');
+            }
+        }
+
+        // Load businesses
+        async function loadBusinesses() {
+            try {
+                debugLog('Loading businesses from KML data...');
+                const response = await fetch('businesses-from-kml.json');
+                businessData = await response.json();
+                
+                debugLog(`Loaded ${businessData.length} businesses`, 'success');
+                document.getElementById('totalStops').textContent = businessData.length;
+                
+                // Geocode businesses using HERE v8 API
+                await geocodeBusinesses();
+                
+            } catch (error) {
+                // Fallback to pre-geocoded data
+                debugLog('Loading pre-geocoded businesses...', 'warning');
+                const response = await fetch('businesses-geocoded.json');
+                const data = await response.json();
+                geocodedBusinesses = data.filter(b => b.lat && b.lng);
+                debugLog(`Loaded ${geocodedBusinesses.length} geocoded businesses`, 'success');
+            }
+        }
+
+        // Geocode businesses using HERE v8 Geocoding API
+        async function geocodeBusinesses() {
+            debugLog('Geocoding businesses using HERE v8 API...');
+            geocodedBusinesses = [];
+            
+            // Geocode first 20 businesses
+            const toGeocode = businessData.slice(0, 20);
+            
+            for (const business of toGeocode) {
+                try {
+                    const url = `https://geocode.search.hereapi.com/v1/geocode?` + new URLSearchParams({
+                        'apikey': HERE_API_KEY,
+                        'q': business.address
+                    });
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    if (data.items && data.items.length > 0) {
+                        const location = data.items[0].position;
+                        geocodedBusinesses.push({
+                            ...business,
+                            lat: location.lat,
+                            lng: location.lng
+                        });
+                        debugLog(`✓ Geocoded: ${business.name}`, 'success');
+                    }
+                } catch (error) {
+                    debugLog(`✗ Failed to geocode: ${business.name}`, 'warning');
+                    // Use fallback coordinates
+                    geocodedBusinesses.push({
+                        ...business,
+                        lat: 37.76 + Math.random() * 0.04,
+                        lng: -122.28 + Math.random() * 0.05
+                    });
+                }
+            }
+            
+            debugLog(`Geocoded ${geocodedBusinesses.length} businesses`, 'success');
+        }
+
+        // Calculate route using HERE v8 API via proxy
+        async function calculateRouteV8(waypoints) {
+            debugLog('Calculating route using HERE v8 API...');
+            
+            // Build the route request using v8 API format
+            const origin = `${waypoints[0].lat},${waypoints[0].lng}`;
+            const destination = `${waypoints[waypoints.length - 1].lat},${waypoints[waypoints.length - 1].lng}`;
+            
+            // Via points (all waypoints except first and last)
+            const viaPoints = waypoints.slice(1, -1).map(wp => `${wp.lat},${wp.lng}`);
+            
+            // Create URL with parameters
+            const params = new URLSearchParams({
+                'apikey': HERE_API_KEY,
+                'transportMode': 'bicycle',
+                'origin': origin,
+                'destination': destination,
+                'return': 'polyline,summary,actions,instructions'
+            });
+            
+            // Add via points if any
+            if (viaPoints.length > 0) {
+                params.append('via', viaPoints.join('|'));
+            }
+            
+            const url = `https://router.hereapi.com/v8/routes?${params}`;
+            
+            debugLog(`API URL: ${url.substring(0, 100)}...`);
+            
+            try {
+                // Since we can't call the API directly from browser due to CORS,
+                // we'll use a workaround with the HERE SDK
+                const response = await callHEREApiViaSDK(waypoints);
+                return response;
+            } catch (error) {
+                debugLog(`Route calculation error: ${error.message}`, 'error');
+                throw error;
+            }
+        }
+
+        // Workaround: Use SDK to calculate route
+        async function callHEREApiViaSDK(waypoints) {
+            return new Promise((resolve, reject) => {
+                const router = platform.getRoutingService(null, 8); // Try to force v8
+                
+                // Build routing parameters for v8-style API
+                const routingParams = {
+                    'routingMode': 'fast',
+                    'transportMode': 'bicycle',
+                    'origin': `${waypoints[0].lat},${waypoints[0].lng}`,
+                    'destination': `${waypoints[waypoints.length - 1].lat},${waypoints[waypoints.length - 1].lng}`,
+                    'return': 'polyline,summary'
+                };
+                
+                // Add via points
+                if (waypoints.length > 2) {
+                    const viaPoints = waypoints.slice(1, -1).map(wp => `${wp.lat},${wp.lng}`);
+                    routingParams['via'] = viaPoints.join('|');
+                }
+                
+                // Try v8 format first
+                router.calculateRoute(routingParams,
+                    (result) => {
+                        debugLog('Route calculated via SDK!', 'success');
+                        resolve(result);
+                    },
+                    (error) => {
+                        debugLog('SDK v8 failed, trying v7 format...', 'warning');
+                        
+                        // Fallback to v7 format
+                        const routerV7 = platform.getRoutingService();
+                        const paramsV7 = {
+                            'mode': 'fastest;bicycle',
+                            'representation': 'display',
+                            'routeattributes': 'waypoints,summary,shape'
+                        };
+                        
+                        waypoints.forEach((wp, i) => {
+                            paramsV7[`waypoint${i}`] = `${wp.lat},${wp.lng}`;
+                        });
+                        
+                        routerV7.calculateRoute(paramsV7,
+                            (result) => {
+                                debugLog('Route calculated via v7 SDK!', 'success');
+                                resolve(result);
+                            },
+                            (error) => {
+                                reject(error);
+                            }
+                        );
+                    }
+                );
+            });
+        }
+
+        // Optimize route
+        async function optimizeRoute() {
+            const count = parseInt(document.getElementById('businessCount').value);
+            debugLog(`Optimizing route for ${count} businesses...`);
+            updateStatus(`Optimizing route for ${count} businesses...`, 'loading');
+            
+            // Show loader
+            document.getElementById('loader').classList.add('active');
+            document.getElementById('optimizeBtn').disabled = true;
+            
+            try {
+                // Get subset of businesses
+                const businesses = geocodedBusinesses.slice(0, count);
+                
+                // Optimize sequence using nearest neighbor
+                const optimized = optimizeSequence(businesses);
+                
+                // Create waypoints array
+                const waypoints = [
+                    STARTING_POINT,
+                    ...optimized,
+                    STARTING_POINT
+                ];
+                
+                // Calculate route
+                const result = await callHEREApiViaSDK(waypoints);
+                
+                // Display route based on response format
+                if (result.routes && result.routes.length > 0) {
+                    // v8 format
+                    displayRouteV8(result.routes[0]);
+                } else if (result.response && result.response.route) {
+                    // v7 format
+                    displayRouteV7(result.response.route[0]);
+                }
+                
+                // Add business markers
+                addBusinessMarkers(optimized);
+                updateBusinessList(optimized);
+                
+                updateStatus(`✅ Route optimized for ${count} businesses!`, 'success');
+                
+            } catch (error) {
+                debugLog(`Optimization failed: ${error.message}`, 'error');
+                updateStatus('Failed to optimize route', 'error');
+            } finally {
+                // Hide loader
+                document.getElementById('loader').classList.remove('active');
+                document.getElementById('optimizeBtn').disabled = false;
+            }
+        }
+
+        // Optimize sequence using nearest neighbor
+        function optimizeSequence(businesses) {
+            const result = [];
+            const unvisited = [...businesses];
+            let current = STARTING_POINT;
+
+            while (unvisited.length > 0) {
+                let nearestIndex = 0;
+                let nearestDistance = Infinity;
+
+                unvisited.forEach((business, index) => {
+                    const distance = getDistance(current, business);
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestIndex = index;
+                    }
+                });
+
+                current = unvisited[nearestIndex];
+                result.push(current);
+                unvisited.splice(nearestIndex, 1);
+            }
+
+            return result;
+        }
+
+        // Calculate distance between two points
+        function getDistance(point1, point2) {
+            const R = 3959; // Earth radius in miles
+            const dLat = (point2.lat - point1.lat) * Math.PI / 180;
+            const dLng = (point2.lng - point1.lng) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(point1.lat * Math.PI / 180) * Math.cos(point2.lat * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Display route (v8 format)
+        function displayRouteV8(route) {
+            debugLog('Displaying v8 route...');
+            
+            // Remove old route
+            if (routeLine) {
+                map.removeObject(routeLine);
+            }
+
+            // Decode polyline if it exists
+            if (route.sections && route.sections[0].polyline) {
+                const linestring = H.geo.LineString.fromFlexiblePolyline(route.sections[0].polyline);
+                
+                routeLine = new H.map.Polyline(linestring, {
+                    style: { strokeColor: '#667eea', lineWidth: 5 }
+                });
+
+                map.addObject(routeLine);
+                map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
+            }
+
+            // Update statistics
+            if (route.sections && route.sections[0].summary) {
+                const summary = route.sections[0].summary;
+                const miles = (summary.length / 1609.34).toFixed(1);
+                const minutes = Math.round(summary.duration / 60);
+                const calories = Math.round(miles * 30);
+
+                document.getElementById('totalDistance').textContent = `${miles} mi`;
+                document.getElementById('totalTime').textContent = `${minutes} min`;
+                document.getElementById('calories').textContent = calories;
+            }
+        }
+
+        // Display route (v7 format)
+        function displayRouteV7(route) {
+            debugLog('Displaying v7 route...');
+            
+            // Remove old route
+            if (routeLine) {
+                map.removeObject(routeLine);
+            }
+
+            // Create LineString from route shape
+            const linestring = new H.geo.LineString();
+            route.shape.forEach(point => {
+                const [lat, lng] = point.split(',');
+                linestring.pushLatLngAlt(parseFloat(lat), parseFloat(lng));
+            });
+
+            // Create polyline
+            routeLine = new H.map.Polyline(linestring, {
+                style: { strokeColor: '#667eea', lineWidth: 5 }
+            });
+
+            map.addObject(routeLine);
+            map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
+
+            // Update statistics
+            if (route.summary) {
+                const miles = (route.summary.distance / 1609.34).toFixed(1);
+                const minutes = Math.round(route.summary.travelTime / 60);
+                const calories = Math.round(miles * 30);
+
+                document.getElementById('totalDistance').textContent = `${miles} mi`;
+                document.getElementById('totalTime').textContent = `${minutes} min`;
+                document.getElementById('calories').textContent = calories;
+            }
+        }
+
+        // Add business markers
+        function addBusinessMarkers(businesses) {
+            // Clear existing business markers (keep start marker)
+            mapGroup.getObjects().forEach(obj => {
+                if (obj !== mapGroup.getObjects()[0]) {
+                    mapGroup.removeObject(obj);
+                }
+            });
+
+            businesses.forEach((business, index) => {
+                const icon = new H.map.Icon('data:image/svg+xml;base64,' + btoa(`
+                    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="#667eea" stroke="white" stroke-width="2"/>
+                        <text x="12" y="16" text-anchor="middle" fill="white" font-weight="bold" font-size="11">${index + 1}</text>
+                    </svg>
+                `), {size: {w: 24, h: 24}});
+
+                const marker = new H.map.Marker(
+                    {lat: business.lat, lng: business.lng},
+                    {icon: icon}
+                );
+                
+                mapGroup.addObject(marker);
+            });
+        }
+
+        // Update business list
+        function updateBusinessList(businesses) {
+            const listDiv = document.getElementById('businessList');
+            listDiv.innerHTML = '';
+
+            businesses.forEach((business, index) => {
+                const item = document.createElement('div');
+                item.className = 'business-item';
+                item.innerHTML = `
+                    <div class="business-number">${index + 1}</div>
+                    <div>
+                        <div style="font-weight: 500;">${business.name}</div>
+                        <div style="font-size: 12px; color: #6c757d;">${business.address}</div>
+                    </div>
+                `;
+                listDiv.appendChild(item);
+            });
+        }
+
+        // Update slider value display
+        document.getElementById('businessCount').addEventListener('input', function() {
+            document.getElementById('businessCountValue').textContent = this.value;
+        });
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initMap();
+        });
+    </script>
+</body>
+</html>

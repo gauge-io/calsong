@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalsOng Bicycle Route Optimizer - Complete Version</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            margin: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+        #map {
+            height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .range-value {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+        .business-list {
+            margin-top: 20px;
+        }
+        .business-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .business-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .debug-panel {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #00ff00;
+        }
+        .debug-log {
+            margin-bottom: 5px;
+        }
+        .debug-log.error { color: #ff4444; }
+        .debug-log.success { color: #44ff44; }
+        .debug-log.warning { color: #ffaa00; }
+        .timestamp { color: #888; margin-right: 10px; }
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .loader.active {
+            display: block;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .route-info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚴 CalsOng Bicycle Route Optimizer - Complete Version</h1>
+            <div id="status" class="status loading">Initializing...</div>
+        </div>
+
+        <div class="main-content">
+            <div id="map"></div>
+            
+            <div class="sidebar">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Stops</div>
+                        <div class="stat-value" id="totalStops">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Distance</div>
+                        <div class="stat-value" id="totalDistance">0 mi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="totalTime">0 min</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Calories</div>
+                        <div class="stat-value" id="calories">0</div>
+                    </div>
+                </div>
+
+                <div class="route-info">
+                    <strong>Route Type:</strong> Bicycle-friendly roads<br>
+                    <strong>Optimization:</strong> Shortest distance<br>
+                    <strong>Max waypoints:</strong> 102 businesses
+                </div>
+
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="businessCount">Number of Businesses</label>
+                        <input type="range" id="businessCount" min="2" max="102" value="10">
+                        <div class="range-value" id="businessCountValue">10</div>
+                    </div>
+                    <button id="optimizeBtn" onclick="optimizeRoute()">Optimize Route</button>
+                    <button id="loadAllBtn" onclick="loadAllBusinesses()">Load All 102 Businesses</button>
+                </div>
+
+                <div class="loader" id="loader">
+                    <div class="spinner"></div>
+                    <p>Calculating optimal bicycle route...</p>
+                </div>
+
+                <div class="business-list">
+                    <h3>Route Stops (<span id="stopCount">0</span>)</h3>
+                    <div id="businessList">Loading businesses...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="debug-panel">
+            <div id="debugLogs"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Proxy server URL
+        const PROXY_URL = 'http://localhost:3002';
+        
+        // Starting point
+        const STARTING_POINT = {
+            lat: 37.76713,
+            lng: -122.26021,
+            name: "Starting Point",
+            address: "1620 San Jose Avenue, Alameda, CA 94501"
+        };
+
+        let map = null;
+        let businessData = [];
+        let geocodedBusinesses = [];
+        let markers = [];
+        let routeLine = null;
+        let currentRoute = null;
+
+        // Debug logging
+        function debugLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugLogs = document.getElementById('debugLogs');
+            const logEntry = document.createElement('div');
+            logEntry.className = `debug-log ${type}`;
+            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+            debugLogs.insertBefore(logEntry, debugLogs.firstChild);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        // Update status
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+
+        // Initialize Leaflet map
+        async function initMap() {
+            try {
+                debugLog('Initializing Leaflet map...');
+                
+                // Create map
+                map = L.map('map').setView([STARTING_POINT.lat, STARTING_POINT.lng], 13);
+                
+                // Add tile layer
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // Add starting point marker
+                const startIcon = L.divIcon({
+                    html: '<div style="background: #ff4444; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">S</div>',
+                    iconSize: [30, 30],
+                    className: ''
+                });
+
+                L.marker([STARTING_POINT.lat, STARTING_POINT.lng], { icon: startIcon })
+                    .addTo(map)
+                    .bindPopup(`<b>${STARTING_POINT.name}</b><br>${STARTING_POINT.address}`);
+
+                debugLog('Map initialized successfully!', 'success');
+                updateStatus('Map ready', 'success');
+                
+                // Test proxy connection
+                await testProxyConnection();
+                
+                // Load businesses
+                await loadBusinesses();
+                
+                // Auto-optimize with initial value
+                setTimeout(() => optimizeRoute(), 1000);
+                
+            } catch (error) {
+                debugLog(`Map initialization error: ${error.message}`, 'error');
+                updateStatus('Failed to initialize map', 'error');
+            }
+        }
+
+        // Test proxy connection
+        async function testProxyConnection() {
+            try {
+                debugLog('Testing proxy connection...');
+                const response = await fetch(`${PROXY_URL}/api/health`);
+                const data = await response.json();
+                debugLog(`Proxy server: ${data.message}`, 'success');
+            } catch (error) {
+                debugLog('Proxy server not running! Start it with: node scripts/route-proxy.js', 'error');
+                updateStatus('Proxy server not running', 'error');
+            }
+        }
+
+        // Load businesses
+        async function loadBusinesses() {
+            try {
+                debugLog('Loading businesses...');
+                
+                // First try pre-geocoded data
+                try {
+                    const response = await fetch('businesses-geocoded.json');
+                    const data = await response.json();
+                    geocodedBusinesses = data.filter(b => b.lat && b.lng && 
+                                                     b.lat > 37.7 && b.lat < 37.85 && 
+                                                     b.lng > -122.35 && b.lng < -122.2);
+                    businessData = geocodedBusinesses;
+                    debugLog(`Loaded ${geocodedBusinesses.length} pre-geocoded businesses`, 'success');
+                    
+                    // Update slider max value
+                    document.getElementById('businessCount').max = Math.min(geocodedBusinesses.length, 102);
+                    document.getElementById('totalStops').textContent = geocodedBusinesses.length;
+                    return;
+                } catch (e) {
+                    debugLog('No pre-geocoded data, loading from KML...', 'warning');
+                }
+                
+                // Fallback to KML data
+                const response = await fetch('businesses-from-kml.json');
+                businessData = await response.json();
+                debugLog(`Loaded ${businessData.length} businesses from KML`, 'success');
+                
+                // Geocode if needed
+                if (businessData.length > 0 && !businessData[0].lat) {
+                    await geocodeBusinesses();
+                } else {
+                    geocodedBusinesses = businessData;
+                }
+                
+                document.getElementById('totalStops').textContent = geocodedBusinesses.length;
+                document.getElementById('businessCount').max = Math.min(geocodedBusinesses.length, 102);
+                
+            } catch (error) {
+                debugLog(`Error loading businesses: ${error.message}`, 'error');
+            }
+        }
+
+        // Geocode businesses using proxy
+        async function geocodeBusinesses() {
+            debugLog('Geocoding businesses...');
+            geocodedBusinesses = [];
+            
+            // Geocode all businesses (up to 102)
+            const toGeocode = businessData.slice(0, 102);
+            
+            for (const business of toGeocode) {
+                try {
+                    const response = await fetch(`${PROXY_URL}/api/geocode`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ address: business.address })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.items && data.items.length > 0) {
+                        const location = data.items[0].position;
+                        geocodedBusinesses.push({
+                            ...business,
+                            lat: location.lat,
+                            lng: location.lng
+                        });
+                        debugLog(`✓ Geocoded: ${business.name}`, 'success');
+                    }
+                } catch (error) {
+                    debugLog(`✗ Failed to geocode: ${business.name}`, 'warning');
+                }
+            }
+            
+            debugLog(`Geocoded ${geocodedBusinesses.length} businesses`, 'success');
+        }
+
+        // Calculate route using proxy - handles large numbers of waypoints
+        async function calculateRoute(waypoints) {
+            debugLog(`Calculating bicycle route for ${waypoints.length} waypoints...`);
+            
+            // HERE API has a limit on waypoints, so we may need to batch
+            // For now, let's handle up to 102 waypoints by using a simplified approach
+            
+            const origin = `${waypoints[0].lat},${waypoints[0].lng}`;
+            const destination = `${waypoints[waypoints.length - 1].lat},${waypoints[waypoints.length - 1].lng}`;
+            
+            // Via points (all waypoints except first and last)
+            const via = waypoints.slice(1, -1).map(wp => `${wp.lat},${wp.lng}`);
+            
+            try {
+                const response = await fetch(`${PROXY_URL}/api/route`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        origin,
+                        destination,
+                        via: via.length > 0 ? via : undefined,
+                        transportMode: 'bicycle'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.routes && data.routes.length > 0) {
+                    debugLog('Bicycle route calculated successfully!', 'success');
+                    currentRoute = data.routes[0];
+                    return data.routes[0];
+                } else {
+                    throw new Error(data.title || 'No route found');
+                }
+                
+            } catch (error) {
+                debugLog(`Route calculation error: ${error.message}`, 'error');
+                throw error;
+            }
+        }
+
+        // Optimize route using 2-opt algorithm for better results
+        function optimizeSequence(businesses) {
+            debugLog('Optimizing route sequence using 2-opt algorithm...');
+            
+            // Start with nearest neighbor
+            let route = nearestNeighbor(businesses);
+            
+            // Apply 2-opt optimization
+            let improved = true;
+            let iterations = 0;
+            const maxIterations = 100;
+            
+            while (improved && iterations < maxIterations) {
+                improved = false;
+                for (let i = 1; i < route.length - 2; i++) {
+                    for (let j = i + 1; j < route.length - 1; j++) {
+                        const currentDist = getDistance(route[i - 1], route[i]) + 
+                                          getDistance(route[j], route[j + 1]);
+                        const newDist = getDistance(route[i - 1], route[j]) + 
+                                       getDistance(route[i], route[j + 1]);
+                        
+                        if (newDist < currentDist) {
+                            // Reverse the route between i and j
+                            const reversed = route.slice(i, j + 1).reverse();
+                            route.splice(i, j - i + 1, ...reversed);
+                            improved = true;
+                        }
+                    }
+                }
+                iterations++;
+            }
+            
+            debugLog(`Route optimized in ${iterations} iterations`, 'success');
+            return route;
+        }
+
+        // Nearest neighbor algorithm
+        function nearestNeighbor(businesses) {
+            const result = [];
+            const unvisited = [...businesses];
+            let current = STARTING_POINT;
+
+            while (unvisited.length > 0) {
+                let nearestIndex = 0;
+                let nearestDistance = Infinity;
+
+                unvisited.forEach((business, index) => {
+                    const distance = getDistance(current, business);
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestIndex = index;
+                    }
+                });
+
+                current = unvisited[nearestIndex];
+                result.push(current);
+                unvisited.splice(nearestIndex, 1);
+            }
+
+            return result;
+        }
+
+        // Calculate distance between two points
+        function getDistance(point1, point2) {
+            const R = 3959; // Earth radius in miles
+            const dLat = (point2.lat - point1.lat) * Math.PI / 180;
+            const dLng = (point2.lng - point1.lng) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(point1.lat * Math.PI / 180) * Math.cos(point2.lat * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Optimize and display route
+        async function optimizeRoute() {
+            const count = parseInt(document.getElementById('businessCount').value);
+            debugLog(`Optimizing bicycle route for ${count} businesses...`);
+            updateStatus(`Optimizing route for ${count} businesses...`, 'loading');
+            
+            // Show loader
+            document.getElementById('loader').classList.add('active');
+            document.getElementById('optimizeBtn').disabled = true;
+            
+            try {
+                // Get subset of businesses
+                const businesses = geocodedBusinesses.slice(0, count);
+                
+                // Optimize sequence using improved algorithm
+                const optimized = optimizeSequence(businesses);
+                
+                // Create waypoints array
+                const waypoints = [
+                    STARTING_POINT,
+                    ...optimized,
+                    STARTING_POINT
+                ];
+                
+                // Calculate route via proxy
+                const route = await calculateRoute(waypoints);
+                
+                // Display route on map
+                displayRoute(route);
+                
+                // Add business markers
+                addBusinessMarkers(optimized);
+                updateBusinessList(optimized);
+                
+                updateStatus(`✅ Route optimized for ${count} businesses!`, 'success');
+                document.getElementById('stopCount').textContent = count;
+                
+            } catch (error) {
+                debugLog(`Optimization failed: ${error.message}`, 'error');
+                updateStatus('Failed to optimize route', 'error');
+            } finally {
+                // Hide loader
+                document.getElementById('loader').classList.remove('active');
+                document.getElementById('optimizeBtn').disabled = false;
+            }
+        }
+
+        // Load all 102 businesses
+        async function loadAllBusinesses() {
+            document.getElementById('businessCount').value = Math.min(geocodedBusinesses.length, 102);
+            document.getElementById('businessCountValue').textContent = Math.min(geocodedBusinesses.length, 102);
+            await optimizeRoute();
+        }
+
+        // Decode HERE flexible polyline format
+        function decodeFlexiblePolyline(encoded) {
+            // HERE's flexible polyline decoder
+            const DECODING_TABLE = [
+                62, -1, -1, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1,
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+                22, 23, 24, 25, -1, -1, -1, -1, 63, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
+            ];
+
+            const coordinates = [];
+            let lat = 0;
+            let lng = 0;
+            let i = 0;
+
+            while (i < encoded.length) {
+                let b;
+                let shift = 0;
+                let result = 0;
+
+                do {
+                    b = encoded.charCodeAt(i++) - 45;
+                    if (b < 0 || b > 77) return coordinates;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+
+                const dlat = ((result & 1) ? ~(result >> 1) : (result >> 1));
+                lat += dlat;
+
+                shift = 0;
+                result = 0;
+
+                do {
+                    b = encoded.charCodeAt(i++) - 45;
+                    if (b < 0 || b > 77) return coordinates;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+
+                const dlng = ((result & 1) ? ~(result >> 1) : (result >> 1));
+                lng += dlng;
+
+                coordinates.push([lat * 1e-5, lng * 1e-5]);
+            }
+
+            return coordinates;
+        }
+
+        // Display route on map following actual roads
+        function displayRoute(route) {
+            debugLog('Displaying bicycle route on map...');
+            
+            // Remove old route
+            if (routeLine) {
+                map.removeLayer(routeLine);
+            }
+
+            // Get polyline from route
+            let coordinates = [];
+            
+            if (route.sections && route.sections.length > 0) {
+                // Combine all sections into one continuous route
+                route.sections.forEach(section => {
+                    if (section.polyline) {
+                        // Decode HERE's flexible polyline format
+                        const sectionCoords = decodeFlexiblePolyline(section.polyline);
+                        coordinates = coordinates.concat(sectionCoords);
+                    }
+                });
+            }
+
+            if (coordinates.length > 0) {
+                // Create polyline following actual roads
+                routeLine = L.polyline(coordinates, {
+                    color: '#667eea',
+                    weight: 5,
+                    opacity: 0.8,
+                    smoothFactor: 1
+                }).addTo(map);
+                
+                // Fit map to route
+                map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
+                
+                debugLog(`Route displayed with ${coordinates.length} points following roads`, 'success');
+            }
+
+            // Update statistics
+            let totalDistance = 0;
+            let totalDuration = 0;
+            
+            if (route.sections) {
+                route.sections.forEach(section => {
+                    if (section.summary) {
+                        totalDistance += section.summary.length || 0;
+                        totalDuration += section.summary.duration || 0;
+                    }
+                });
+            }
+
+            const miles = (totalDistance / 1609.34).toFixed(1);
+            const minutes = Math.round(totalDuration / 60);
+            const calories = Math.round(miles * 30);
+
+            document.getElementById('totalDistance').textContent = `${miles} mi`;
+            document.getElementById('totalTime').textContent = `${minutes} min`;
+            document.getElementById('calories').textContent = calories;
+        }
+
+        // Add business markers
+        function addBusinessMarkers(businesses) {
+            // Clear existing business markers
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            businesses.forEach((business, index) => {
+                const icon = L.divIcon({
+                    html: `<div style="background: #667eea; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${index + 1}</div>`,
+                    iconSize: [24, 24],
+                    className: ''
+                });
+
+                const marker = L.marker([business.lat, business.lng], { icon })
+                    .addTo(map)
+                    .bindPopup(`<b>${index + 1}. ${business.name}</b><br>${business.address}`);
+                
+                markers.push(marker);
+            });
+            
+            debugLog(`Added ${businesses.length} business markers to map`, 'success');
+        }
+
+        // Update business list
+        function updateBusinessList(businesses) {
+            const listDiv = document.getElementById('businessList');
+            listDiv.innerHTML = '';
+
+            businesses.forEach((business, index) => {
+                const item = document.createElement('div');
+                item.className = 'business-item';
+                item.innerHTML = `
+                    <div class="business-number">${index + 1}</div>
+                    <div>
+                        <div style="font-weight: 500;">${business.name}</div>
+                        <div style="font-size: 12px; color: #6c757d;">${business.address}</div>
+                    </div>
+                `;
+                listDiv.appendChild(item);
+            });
+        }
+
+        // Update slider value display
+        document.getElementById('businessCount').addEventListener('input', function() {
+            document.getElementById('businessCountValue').textContent = this.value;
+        });
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initMap();
+        });
+    </script>
+</body>
+</html>

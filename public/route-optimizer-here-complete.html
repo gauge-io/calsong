@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalsOng Bicycle Route Optimizer - HERE Complete</title>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            margin: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .credentials {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+        }
+        #map {
+            height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+        .business-list {
+            margin-top: 20px;
+        }
+        .business-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .business-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .debug-panel {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #00ff00;
+        }
+        .debug-log {
+            margin-bottom: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .debug-log.error { color: #ff4444; }
+        .debug-log.success { color: #44ff44; }
+        .debug-log.warning { color: #ffaa00; }
+        .debug-log.info { color: #00ffff; }
+        .timestamp { color: #888; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚴 CalsOng Bicycle Route Optimizer - HERE Complete Auth</h1>
+            <div class="credentials">
+                App ID: WzuhBtozh8CWwyHmEhEu | API Key: yspJL0...yO8
+            </div>
+            <div id="status" class="status loading">Initializing HERE Maps with dual authentication...</div>
+        </div>
+
+        <div class="main-content">
+            <div id="map"></div>
+            
+            <div class="sidebar">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Stops</div>
+                        <div class="stat-value" id="totalStops">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Distance</div>
+                        <div class="stat-value" id="totalDistance">0 mi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Time</div>
+                        <div class="stat-value" id="totalTime">0 min</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Calories</div>
+                        <div class="stat-value" id="calories">0</div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button onclick="testAuthMethods()">1. Test Auth Methods</button>
+                    <button onclick="testDirectAPI()">2. Test Direct REST API</button>
+                    <button onclick="testSimpleRoute()">3. Test SDK Route</button>
+                    <button onclick="calculateOptimizedRoute()">4. Calculate Full Route</button>
+                </div>
+
+                <div class="business-list">
+                    <h3>Route Stops</h3>
+                    <div id="businessList">Loading businesses...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="debug-panel">
+            <div id="debugLogs"></div>
+        </div>
+    </div>
+
+    <script>
+        // HERE Credentials
+        const HERE_APP_ID = 'WzuhBtozh8CWwyHmEhEu';
+        const HERE_API_KEY = 'yspJL0vEr1fWGBLMsWcNSHjEu74qNQ8M5PYY3stYyO8';
+        
+        // Starting point
+        const STARTING_POINT = {
+            lat: 37.76713,
+            lng: -122.26021,
+            name: "Starting Point",
+            address: "1620 San Jose Avenue, Alameda, CA 94501"
+        };
+
+        let platform = null;
+        let map = null;
+        let router = null;
+        let businessData = [];
+        let mapGroup = null;
+        let routeLine = null;
+
+        // Debug logging
+        function debugLog(message, type = 'info', details = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugLogs = document.getElementById('debugLogs');
+            const logEntry = document.createElement('div');
+            logEntry.className = `debug-log ${type}`;
+            
+            let logText = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+            if (details) {
+                logText += `\n  ${typeof details === 'object' ? JSON.stringify(details, null, 2) : details}`;
+            }
+            
+            logEntry.innerHTML = logText;
+            debugLogs.insertBefore(logEntry, debugLogs.firstChild);
+            console.log(`[${type.toUpperCase()}] ${message}`, details || '');
+        }
+
+        // Update status
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+
+        // Test different authentication methods
+        function testAuthMethods() {
+            debugLog('Testing authentication methods...', 'info');
+            
+            // Method 1: API Key only
+            debugLog('Method 1: API Key only', 'info');
+            const platform1 = new H.service.Platform({
+                'apikey': HERE_API_KEY
+            });
+            debugLog('✓ Platform created with API key', 'success');
+            
+            // Method 2: App ID + App Code (legacy)
+            debugLog('Method 2: App ID + generated App Code', 'warning');
+            const platform2 = new H.service.Platform({
+                'app_id': HERE_APP_ID,
+                'app_code': HERE_API_KEY.substring(0, 20) // Try using part of API key as app code
+            });
+            debugLog('✓ Platform created with App ID + Code', 'success');
+            
+            // Method 3: Both API Key and App ID
+            debugLog('Method 3: Both API Key and App ID', 'info');
+            const platform3 = new H.service.Platform({
+                'apikey': HERE_API_KEY,
+                'app_id': HERE_APP_ID
+            });
+            debugLog('✓ Platform created with both credentials', 'success');
+            
+            updateStatus('Authentication methods tested', 'success');
+        }
+
+        // Test direct REST API calls
+        async function testDirectAPI() {
+            debugLog('Testing direct REST API calls...', 'info');
+            
+            // Test 1: Using API Key in query params
+            const url1 = `https://router.hereapi.com/v8/routes?` + new URLSearchParams({
+                'apikey': HERE_API_KEY,
+                'transportMode': 'bicycle',
+                'origin': `${STARTING_POINT.lat},${STARTING_POINT.lng}`,
+                'destination': '37.7749,-122.2594',
+                'return': 'summary'
+            });
+            
+            debugLog('Test 1: API Key in query params', 'info');
+            debugLog(`URL: ${url1}`, 'info');
+            
+            try {
+                const response1 = await fetch(url1);
+                const data1 = await response1.json();
+                if (response1.ok) {
+                    debugLog('✓ API Key auth successful!', 'success', data1);
+                } else {
+                    debugLog('✗ API Key auth failed', 'error', data1);
+                }
+            } catch (error) {
+                debugLog('✗ Network error (likely CORS)', 'warning', error.message);
+            }
+            
+            // Test 2: Using App ID + App Code (legacy endpoint)
+            const url2 = `https://route.api.here.com/routing/7.2/calculateroute.json?` + new URLSearchParams({
+                'app_id': HERE_APP_ID,
+                'app_code': HERE_API_KEY,
+                'waypoint0': `${STARTING_POINT.lat},${STARTING_POINT.lng}`,
+                'waypoint1': '37.7749,-122.2594',
+                'mode': 'fastest;bicycle'
+            });
+            
+            debugLog('Test 2: App ID + API Key as App Code', 'info');
+            debugLog(`URL: ${url2}`, 'info');
+            
+            try {
+                const response2 = await fetch(url2);
+                const data2 = await response2.json();
+                if (response2.ok) {
+                    debugLog('✓ App ID auth successful!', 'success', data2);
+                } else {
+                    debugLog('✗ App ID auth failed', 'error', data2);
+                }
+            } catch (error) {
+                debugLog('✗ Network error (likely CORS)', 'warning', error.message);
+            }
+            
+            updateStatus('Direct API tests complete', 'success');
+        }
+
+        // Initialize HERE Maps
+        async function initHERE() {
+            try {
+                debugLog('Initializing HERE Maps with dual authentication...', 'info');
+                
+                // Try creating platform with both credentials
+                try {
+                    // First try with API key only (most common)
+                    platform = new H.service.Platform({
+                        'apikey': HERE_API_KEY
+                    });
+                    debugLog('Platform created with API key', 'success');
+                } catch (e1) {
+                    debugLog('API key failed, trying App ID...', 'warning');
+                    // Fallback to App ID + App Code
+                    platform = new H.service.Platform({
+                        'app_id': HERE_APP_ID,
+                        'app_code': HERE_API_KEY
+                    });
+                    debugLog('Platform created with App ID', 'success');
+                }
+
+                // Get default layers
+                const defaultLayers = platform.createDefaultLayers();
+
+                // Initialize map
+                map = new H.Map(
+                    document.getElementById('map'),
+                    defaultLayers.vector.normal.map,
+                    {
+                        zoom: 13,
+                        center: { lat: STARTING_POINT.lat, lng: STARTING_POINT.lng }
+                    }
+                );
+
+                // Add behavior and UI
+                const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                const ui = H.ui.UI.createDefault(map, defaultLayers);
+
+                // Create a group for markers
+                mapGroup = new H.map.Group();
+                map.addObject(mapGroup);
+
+                // Add starting point marker
+                const startIcon = new H.map.Icon('data:image/svg+xml;base64,' + btoa(`
+                    <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="15" cy="15" r="12" fill="#ff4444" stroke="white" stroke-width="3"/>
+                        <text x="15" y="20" text-anchor="middle" fill="white" font-weight="bold" font-size="14">S</text>
+                    </svg>
+                `), {size: {w: 30, h: 30}});
+
+                const startMarker = new H.map.Marker(
+                    {lat: STARTING_POINT.lat, lng: STARTING_POINT.lng},
+                    {icon: startIcon}
+                );
+                mapGroup.addObject(startMarker);
+
+                // Get routing service
+                router = platform.getRoutingService();
+
+                debugLog('HERE Maps initialized successfully!', 'success');
+                updateStatus('HERE Maps ready', 'success');
+                
+                // Load businesses
+                await loadBusinesses();
+                
+            } catch (error) {
+                debugLog(`Initialization error: ${error.message}`, 'error', error);
+                updateStatus('Failed to initialize HERE Maps', 'error');
+            }
+        }
+
+        // Load businesses
+        async function loadBusinesses() {
+            try {
+                debugLog('Loading businesses...', 'info');
+                
+                // Try loading from KML-parsed JSON first
+                try {
+                    const response = await fetch('businesses-from-kml.json');
+                    const kmlBusinesses = await response.json();
+                    debugLog(`Loaded ${kmlBusinesses.length} businesses from KML`, 'success');
+                    businessData = kmlBusinesses;
+                } catch (e) {
+                    // Fallback to geocoded JSON
+                    const response = await fetch('businesses-geocoded.json');
+                    businessData = await response.json();
+                    debugLog(`Loaded ${businessData.length} businesses from geocoded JSON`, 'success');
+                }
+                
+                document.getElementById('totalStops').textContent = businessData.length;
+                updateBusinessList(businessData.slice(0, 5));
+                
+            } catch (error) {
+                debugLog(`Error loading businesses: ${error.message}`, 'error');
+            }
+        }
+
+        // Test simple route
+        function testSimpleRoute() {
+            debugLog('Testing simple SDK route...', 'info');
+            updateStatus('Testing route calculation...', 'loading');
+
+            // Test with minimal parameters
+            const routingParams = {
+                'mode': 'fastest;bicycle',
+                'waypoint0': `${STARTING_POINT.lat},${STARTING_POINT.lng}`,
+                'waypoint1': '37.7749,-122.2594'
+            };
+
+            debugLog('Route params:', 'info', routingParams);
+
+            router.calculateRoute(
+                routingParams,
+                (result) => {
+                    debugLog('Route calculation successful!', 'success');
+                    if (result.response && result.response.route && result.response.route.length > 0) {
+                        const route = result.response.route[0];
+                        displayRoute(route);
+                        updateStatus('Route calculated successfully!', 'success');
+                        
+                        // Log route details
+                        const distance = (route.summary.distance / 1609.34).toFixed(2);
+                        const time = Math.round(route.summary.travelTime / 60);
+                        debugLog(`Route: ${distance} miles, ${time} minutes`, 'success');
+                    } else {
+                        debugLog('No route in response', 'warning', result);
+                    }
+                },
+                (error) => {
+                    debugLog('Route calculation failed', 'error', error);
+                    updateStatus('Route calculation failed', 'error');
+                    
+                    // Try to extract more error details
+                    if (error.message) {
+                        debugLog('Error message:', 'error', error.message);
+                    }
+                    if (error.stack) {
+                        debugLog('Error stack:', 'error', error.stack);
+                    }
+                }
+            );
+        }
+
+        // Calculate optimized route
+        async function calculateOptimizedRoute() {
+            debugLog('Calculating optimized route...', 'info');
+            updateStatus('Optimizing route for all businesses...', 'loading');
+
+            // For now, use first 10 businesses
+            const businesses = businessData.slice(0, 10);
+            
+            // If businesses don't have coordinates, we need to geocode them
+            if (!businesses[0].lat) {
+                debugLog('Businesses need geocoding, using fallback coordinates', 'warning');
+                // Use approximate coordinates for demo
+                businesses.forEach((b, i) => {
+                    b.lat = 37.76 + (Math.random() * 0.04);
+                    b.lng = -122.28 + (Math.random() * 0.05);
+                });
+            }
+
+            // Build routing parameters
+            const routingParams = {
+                'mode': 'fastest;bicycle',
+                'representation': 'display',
+                'routeattributes': 'waypoints,summary,shape'
+            };
+
+            // Add waypoints
+            routingParams['waypoint0'] = `${STARTING_POINT.lat},${STARTING_POINT.lng}`;
+            businesses.forEach((b, i) => {
+                routingParams[`waypoint${i + 1}`] = `${b.lat},${b.lng}`;
+            });
+            routingParams[`waypoint${businesses.length + 1}`] = `${STARTING_POINT.lat},${STARTING_POINT.lng}`;
+
+            debugLog(`Calculating route with ${businesses.length + 2} waypoints`, 'info');
+
+            router.calculateRoute(
+                routingParams,
+                (result) => {
+                    if (result.response && result.response.route && result.response.route.length > 0) {
+                        debugLog('Optimized route calculated!', 'success');
+                        const route = result.response.route[0];
+                        displayRoute(route);
+                        addBusinessMarkers(businesses);
+                        updateBusinessList(businesses);
+                        updateStatus(`Route optimized for ${businesses.length} businesses!`, 'success');
+                    } else {
+                        debugLog('No route in response', 'error');
+                        updateStatus('Failed to calculate route', 'error');
+                    }
+                },
+                (error) => {
+                    debugLog('Route optimization failed', 'error', error);
+                    updateStatus('Route optimization failed', 'error');
+                }
+            );
+        }
+
+        // Display route
+        function displayRoute(route) {
+            // Remove old route
+            if (routeLine) {
+                map.removeObject(routeLine);
+            }
+
+            // Create LineString from route shape
+            const linestring = new H.geo.LineString();
+            route.shape.forEach(point => {
+                const [lat, lng] = point.split(',');
+                linestring.pushLatLngAlt(parseFloat(lat), parseFloat(lng));
+            });
+
+            // Create polyline
+            routeLine = new H.map.Polyline(linestring, {
+                style: { strokeColor: '#667eea', lineWidth: 5 }
+            });
+
+            map.addObject(routeLine);
+            
+            // Fit map to show entire route
+            map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
+
+            // Update statistics
+            if (route.summary) {
+                const miles = (route.summary.distance / 1609.34).toFixed(1);
+                const minutes = Math.round(route.summary.travelTime / 60);
+                const calories = Math.round(miles * 30);
+
+                document.getElementById('totalDistance').textContent = `${miles} mi`;
+                document.getElementById('totalTime').textContent = `${minutes} min`;
+                document.getElementById('calories').textContent = calories;
+            }
+        }
+
+        // Add business markers
+        function addBusinessMarkers(businesses) {
+            // Clear existing business markers (keep start marker)
+            mapGroup.getObjects().forEach(obj => {
+                if (obj !== mapGroup.getObjects()[0]) { // Keep first marker (start point)
+                    mapGroup.removeObject(obj);
+                }
+            });
+
+            businesses.forEach((business, index) => {
+                const icon = new H.map.Icon('data:image/svg+xml;base64,' + btoa(`
+                    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" fill="#667eea" stroke="white" stroke-width="2"/>
+                        <text x="12" y="16" text-anchor="middle" fill="white" font-weight="bold" font-size="11">${index + 1}</text>
+                    </svg>
+                `), {size: {w: 24, h: 24}});
+
+                const marker = new H.map.Marker(
+                    {lat: business.lat, lng: business.lng},
+                    {icon: icon}
+                );
+                
+                mapGroup.addObject(marker);
+            });
+        }
+
+        // Update business list
+        function updateBusinessList(businesses) {
+            const listDiv = document.getElementById('businessList');
+            listDiv.innerHTML = '';
+
+            businesses.forEach((business, index) => {
+                const item = document.createElement('div');
+                item.className = 'business-item';
+                item.innerHTML = `
+                    <div class="business-number">${index + 1}</div>
+                    <div>
+                        <div style="font-weight: 500;">${business.name}</div>
+                        <div style="font-size: 12px; color: #6c757d;">${business.address}</div>
+                    </div>
+                `;
+                listDiv.appendChild(item);
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initHERE();
+        });
+    </script>
+</body>
+</html>
