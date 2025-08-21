@@ -107,15 +107,7 @@
             }
             
             .header {
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                border-top: none;
-                padding: 15px 20px;
-                margin-bottom: 0;
-                position: sticky;
-                top: 0;
-                z-index: 1001;
+                display: none;
             }
             
             h1 {
@@ -136,7 +128,7 @@
             
             #map {
                 position: sticky;
-                top: 80px; /* Height of header */
+                top: 0;
                 height: 50vh;
                 width: 100%;
                 border-radius: 0;
@@ -175,13 +167,7 @@
             }
             
             .update-route-btn {
-                padding: 14px;
-                font-size: 16px;
-                position: sticky;
-                top: calc(80px + 50vh + 10px);
-                z-index: 999;
-                background: #ffffff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                display: none;
             }
             
             .business-list {
@@ -261,30 +247,7 @@
             font-weight: 600;
             color: #ffffff;
         }
-        .update-route-btn {
-            width: 100%;
-            padding: 12px;
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 20px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-        .update-route-btn:hover {
-            background: #f0f0f0;
-            transform: translateY(-1px);
-        }
-        .update-route-btn:disabled {
-            background: #333;
-            color: #666;
-            cursor: not-allowed;
-            transform: none;
-        }
+
         .business-list {
             flex: 1;
             overflow: hidden;
@@ -445,7 +408,7 @@
                     </div>
                 </div>
 
-                <button class="update-route-btn" id="updateRouteBtn" onclick="updateRoute()">Update Route</button>
+
 
                 <div class="business-list">
                     <h3>Route Stops (<span id="stopCount">0</span> active)</h3>
@@ -699,7 +662,7 @@
             
             debugLog(`Updating route with ${enabledList.length} businesses...`);
             updateStatus(`Optimizing route for ${enabledList.length} businesses...`, 'loading');
-            document.getElementById('updateRouteBtn').disabled = true;
+
             
             try {
                 // Optimize sequence
@@ -731,7 +694,7 @@
                 debugLog(`Route update failed: ${error.message}`, 'error');
                 updateStatus('Failed to update route', 'error');
             } finally {
-                document.getElementById('updateRouteBtn').disabled = false;
+
             }
         }
 
