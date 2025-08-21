@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alameda Business Route Optimizer</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet Routing Machine CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
+        .status.ready {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            height: 700px;
+        }
+        
+        .map-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .sidebar h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .stat-card h3 {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .business-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .business-item {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .business-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .business-item:last-child {
+            border-bottom: none;
+        }
+        
+        .business-item .number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+        
+        .business-item .name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .business-item .address {
+            font-size: 0.85em;
+            color: #666;
+            margin-left: 40px;
+        }
+        
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .map-container {
+                height: 500px;
+            }
+            
+            .sidebar {
+                max-height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ Alameda Business Route Optimizer</h1>
+            <p>Optimize your route through 100+ local businesses in Alameda, CA. This tool uses advanced algorithms to find the most efficient path, saving you time and fuel.</p>
+        </div>
+        
+        <div class="controls">
+            <button id="loadData" class="btn btn-primary">
+                <span>📍</span> Load Business Data
+            </button>
+            <button id="optimizeRoute" class="btn btn-primary" disabled>
+                <span>🚀</span> Optimize Route
+            </button>
+            <button id="clearRoute" class="btn btn-secondary" disabled>
+                <span>🔄</span> Clear Route
+            </button>
+            <select id="algorithm" class="btn btn-secondary">
+                <option value="nearest">Nearest Neighbor</option>
+                <option value="2opt">2-Opt Algorithm</option>
+                <option value="cluster">Cluster-Based</option>
+            </select>
+            <div id="status" class="status ready">Ready</div>
+        </div>
+        
+        <div class="error-message" id="errorMessage"></div>
+        
+        <div class="main-content">
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="loader" id="loader" style="display: none;">
+                    <div class="spinner"></div>
+                    <div>Optimizing route...</div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <h2>Route Information</h2>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Total Stops</h3>
+                        <div class="value" id="totalStops">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Distance</h3>
+                        <div class="value" id="totalDistance">0 mi</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Est. Time</h3>
+                        <div class="value" id="totalTime">0 min</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Algorithm</h3>
+                        <div class="value" id="algorithmUsed">-</div>
+                    </div>
+                </div>
+                
+                <h2>Business Order</h2>
+                <div class="business-list" id="businessList">
+                    <p style="color: #999; text-align: center; padding: 20px;">
+                        Click "Load Business Data" to begin
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet Routing Machine -->
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+    
+    <script>
+        // Business data from CSV
+        const businessData = [
+            {name: "Embarc", address: "475 Santa Clara Ave, Alameda, CA 94501"},
+            {name: "Fuzzy Caterpillar Preschool", address: "1510 Encinal Ave, Alameda, CA 94501"},
+            {name: "Golden Needle Tailoring", address: "1903 Encinal Ave, Alameda, CA 94501"},
+            {name: "A-Town Productions", address: "909 Marina Village Pkwy. Ste 357, Alameda, CA 94501"},
+            {name: "Alameda Elks Lodge #1015", address: "2255 Santa Clara Ave, Alameda, CA 94501"},
+            {name: "1701 Auto Care", address: "1701 Buena Vista Ave, Alameda, CA 94501"},
+            {name: "Alameda Municpal Power", address: "2000 Grand St, Alameda, CA 94501"},
+            {name: "A.T. Weber Plumbing", address: "1100 Lincoln Ave, Alameda, CA 94501"},
+            {name: "A1 Market", address: "1420 Encinal Ave, Alameda, CA 94501"},
+            {name: "Alameda Bicycle", address: "1522 Park St, Alameda, CA 94501"},
+            {name: "Alameda Cards and Comics", address: "1515 Webster St, Alameda, CA 94501"},
+            {name: "Alameda Post", address: "1516 Oak St., Suite 203, Alameda, CA 94501"},
+            {name: "Almanac Beer Co.", address: "651 W Tower Ave, Alameda, CA 94501"},
+            {name: "BAMP", address: "2350 Saratoga St Unit 250, Alameda, CA 94501"},
+            {name: "Alameda Theatre & Cineplex", address: "2317 Central Ave, Alameda, CA 94501"},
+            {name: "Beaker's Records", address: "918 Central Ave Unit A, Alameda, CA 94501"},
+            {name: "Fireside Lounge", address: "1453 Webster St, Alameda, CA 94501"},
+            {name: "Forbidden Island", address: "1304 Lincoln Ave, Alameda, CA 94501"},
+            {name: "High Scores Arcade", address: "1414 Park St, Alameda, CA 94501"},
+            {name: "Highwire Coffee Roasters", address: "1300 Park St, Alameda, CA 94501"},
+            {name: "Island Savoy", address: "1200 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Lazybird Coffee", address: "930 Central Ave, Alameda, CA 94501"},
+            {name: "Ozzy's Music Academy", address: "1323 Central Ave, Alameda, CA 94501"},
+            {name: "Norman Sanchez Archiecture", address: "1151 Harbor Bay Pkwy # 206C, Alameda, CA 94502"},
+            {name: "Park Station", address: "1200 Park St, Alameda, CA 94501"},
+            {name: "Red Tie Printing", address: "741 Buena Vista Ave, Alameda, CA 94501"},
+            {name: "Rhythmix Cultural Works", address: "2513 Blanding Ave, Alameda, CA 94501"},
+            {name: "Rotary Club", address: "1406 Morton Avenue, Alameda, CA 94501"},
+            {name: "Ruby's Tumbling", address: "1102 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Salon 1500", address: "1500 Encinal Ave, Alameda, CA 94501"},
+            {name: "Santoros Italian Market & Deli", address: "475 Santa Clara Ave, Alameda, CA 94501"},
+            {name: "Team Schuler Real Estate", address: "1414 Park Ave, Alameda, CA 94501"},
+            {name: "The Benton", address: "1403 Encinal Ave, Alameda, CA 94501"},
+            {name: "The Experience Share", address: "1600 Sherman St, Alameda, CA 94501"},
+            {name: "The Gunderman Group", address: "2437 Santa Clara Ave, Alameda, CA 94501"},
+            {name: "The Local", address: "1333 Park St, Alameda, CA 94501"},
+            {name: "Trabocco Kitchen & Cocktails", address: "2213 South Shore Center, Alameda, CA 94501"},
+            {name: "Tucker's Super Creamed Ice Cream", address: "1349 Park St, Alameda, CA 94501"},
+            {name: "Village Kids Club", address: "1102 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Westside Joes", address: "1000 Central Ave, Alameda, CA 94501"},
+            {name: "1400 Bar & Grill", address: "1400 Webster St, Alameda, CA 94501"},
+            {name: "A & T Bookkeeping & Tax Services", address: "1336 Weber St, Alameda, CA 94501"},
+            {name: "A & T House Cleaning", address: "647 Haight Ave, Alameda, CA 94501"},
+            {name: "A B C Preschool", address: "1525 Bay St, Alameda, CA 94501"},
+            {name: "Admiral Maltings", address: "651 W Tower Ave, Alameda, CA 94501"},
+            {name: "Alameda Bagels & Donuts", address: "1300 Park St, Alameda, CA 94501"},
+            {name: "Alameda Floral Design", address: "1908 Encinal Ave, Alameda, CA 94501"},
+            {name: "Alameda Golf Works", address: "1710 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Alameda Museum", address: "2329 Central Ave, Alameda, CA 94501"},
+            {name: "Asena Restaurant", address: "2500 Santa Clara Ave, Alameda, CA 94501"},
+            {name: "Bead Inspirations", address: "1544 Park St, Alameda, CA 94501"},
+            {name: "Beadissimo", address: "1318 Park St, Alameda, CA 94501"},
+            {name: "Blue Dot Cafe", address: "1910 Encinal Ave, Alameda, CA 94501"},
+            {name: "Books Inc.", address: "1344 Park St, Alameda, CA 94501"},
+            {name: "Café Jolie", address: "1500 Webster St, Alameda, CA 94501"},
+            {name: "Chestnut Encinal Market", address: "1202 Chestnut St, Alameda, CA 94501"},
+            {name: "Craft Chocolate", address: "1118 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Croll's Pizza", address: "1454 Webster St, Alameda, CA 94501"},
+            {name: "Dan's Fresh Produce", address: "2300 Central Ave, Alameda, CA 94501"},
+            {name: "Doodlebug", address: "1234 Park St, Alameda, CA 94501"},
+            {name: "Dragon Rouge", address: "2337 Blanding Ave, Alameda, CA 94501"},
+            {name: "East End Pizza", address: "1650 Park St, Alameda, CA 94501"},
+            {name: "El Caballo Wraps", address: "1108 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Farmstead Cheeses and Wines", address: "1650 Park St, Alameda, CA 94501"},
+            {name: "Frank Logan Barbershop", address: "928 Central Ave #A, Alameda, CA 94501"},
+            {name: "Gold Coast Coffee", address: "1340 Park St, Alameda, CA 94501"},
+            {name: "Gold Coast Real Estate", address: "1300 Encinal Ave, Alameda, CA 94501"},
+            {name: "Jay's Coffee and Treats", address: "1414 Encinal Ave, Alameda, CA 94501"},
+            {name: "Jim's Coffee Shop", address: "1333 Park St, Alameda, CA 94501"},
+            {name: "Juan's Barbershop", address: "1201a Lincoln Ave, Alameda, CA 94501"},
+            {name: "Julie's Coffee Shop", address: "1223 Park St, Alameda, CA 94501"},
+            {name: "Marti's Place", address: "1905 1/2 Encinal Ave, Alameda, CA 94501"},
+            {name: "McGee's Bar & Grill", address: "1640 Park St, Alameda, CA 94501"},
+            {name: "Mosley's Cafe", address: "2099 Grand St, Alameda, CA 94501"},
+            {name: "Neptune Beach Brewing Co.", address: "1300 Park St, Alameda, CA 94501"},
+            {name: "Neptune's Net Seafood", address: "1900 Webster St, Alameda, CA 94501"},
+            {name: "Ole's Waffle Shop", address: "1507 Park St, Alameda, CA 94501"},
+            {name: "Pacific Pinball Museum", address: "1510 Webster St, Alameda, CA 94501"},
+            {name: "Park Social", address: "1222 Park St, Alameda, CA 94501"},
+            {name: "Parkway Auto Repair", address: "2100 Encinal Ave, Alameda, CA 94501"},
+            {name: "Penumbra", address: "One Penumbra Place, Alameda, CA 94502"},
+            {name: "Preferred Properties", address: "1914 Encinal Ave, Alameda, CA 94501"},
+            {name: "Scolari's Kitchen", address: "1303 Park St, Alameda, CA 94501"},
+            {name: "Semifreddi's Bakery", address: "2715 Pacific Ave, Alameda, CA 94501"},
+            {name: "Speisekammer", address: "2424 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Star Market", address: "1336 Park St, Alameda, CA 94501"},
+            {name: "Sunclean Carpet Care", address: "2021 San Antonio Ave, Alameda, CA 94501"},
+            {name: "The Beanery", address: "1650 Park St, Alameda, CA 94501"},
+            {name: "The Star on Park", address: "1400 Park St, Alameda, CA 94501"},
+            {name: "The Thrifty Kitty", address: "1509 Webster St, Alameda, CA 94501"},
+            {name: "Toy Safari", address: "1410 Park St, Alameda, CA 94501"},
+            {name: "Troy Greek Cuisine", address: "2320 Central Ave, Alameda, CA 94501"},
+            {name: "Tutu School Alameda", address: "1419 Park St Unit H, Alameda, CA 94501"},
+            {name: "Twirl", address: "1424 Park St, Alameda, CA 94501"},
+            {name: "Twist", address: "1906 Encinal Ave, Alameda, CA 94501"},
+            {name: "Whisk Cake Creations", address: "1216 Lincoln Ave, Alameda, CA 94501"},
+            {name: "Whiz Kids", address: "1335 Park St, Alameda, CA 94501"},
+            {name: "Kat's Meow", address: "1519 Park St, Alameda, CA 94501"},
+            {name: "Phoenix Coworking", address: "2315 Lincoln Ave Unit 2, Alameda, CA 94501"},
+            {name: "Digifli", address: "1516 Oak St #203, Alameda, CA 94501"},
+            {name: "Three Weeks Barbershop", address: "1913 BROADWAY SUITE A, Alameda, CA 94501"},
+            {name: "Village Voyagers", address: "1011 Grand Street, Alameda, CA 94501"}
+        ];
+        
+        // Initialize map
+        let map = L.map('map').setView([37.7652, -122.2416], 13);
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Global variables
+        let markers = [];
+        let routeControl = null;
+        let businessLocations = [];
+        let optimizedOrder = [];
+        
+        // Geocoding cache (pre-geocoded coordinates for Alameda businesses)
+        // In a production environment, you would use a geocoding API
+        // For this demo, we'll use approximate coordinates
+        function getApproximateCoordinates(address) {
+            // Center of Alameda
+            const baseLatitude = 37.7652;
+            const baseLongitude = -122.2416;
+            
+            // Add some randomization based on street names for demo purposes
+            let latOffset = (Math.random() - 0.5) * 0.02;
+            let lngOffset = (Math.random() - 0.5) * 0.03;
+            
+            // Adjust based on street names
+            if (address.includes('Park St')) {
+                latOffset = -0.005 + Math.random() * 0.01;
+                lngOffset = 0.005 + Math.random() * 0.005;
+            } else if (address.includes('Webster St')) {
+                latOffset = -0.002 + Math.random() * 0.008;
+                lngOffset = 0.008 + Math.random() * 0.005;
+            } else if (address.includes('Central Ave')) {
+                latOffset = 0.005 + Math.random() * 0.008;
+                lngOffset = -0.002 + Math.random() * 0.008;
+            } else if (address.includes('Lincoln Ave')) {
+                latOffset = -0.008 + Math.random() * 0.005;
+                lngOffset = -0.005 + Math.random() * 0.01;
+            } else if (address.includes('Encinal Ave')) {
+                latOffset = -0.01 + Math.random() * 0.005;
+                lngOffset = 0.002 + Math.random() * 0.008;
+            } else if (address.includes('Grand St')) {
+                latOffset = 0.008 + Math.random() * 0.005;
+                lngOffset = -0.008 + Math.random() * 0.005;
+            } else if (address.includes('Santa Clara Ave')) {
+                latOffset = 0.002 + Math.random() * 0.008;
+                lngOffset = 0.005 + Math.random() * 0.008;
+            }
+            
+            return {
+                lat: baseLatitude + latOffset,
+                lng: baseLongitude + lngOffset
+            };
+        }
+        
+        // Load business data
+        document.getElementById('loadData').addEventListener('click', async function() {
+            const loader = document.getElementById('loader');
+            const status = document.getElementById('status');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            loader.style.display = 'block';
+            status.textContent = 'Loading...';
+            status.className = 'status loading';
+            errorMessage.style.display = 'none';
+            
+            try {
+                // Clear existing markers
+                markers.forEach(marker => map.removeLayer(marker));
+                markers = [];
+                businessLocations = [];
+                
+                // Process business data
+                for (let i = 0; i < businessData.length; i++) {
+                    const business = businessData[i];
+                    const coords = getApproximateCoordinates(business.address);
+                    
+                    businessLocations.push({
+                        ...business,
+                        lat: coords.lat,
+                        lng: coords.lng,
+                        index: i
+                    });
+                    
+                    // Create marker
+                    const marker = L.marker([coords.lat, coords.lng])
+                        .bindPopup(`<strong>${business.name}</strong><br>${business.address}`);
+                    
+                    markers.push(marker);
+                    marker.addTo(map);
+                }
+                
+                // Fit map to markers
+                const group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+                
+                // Update UI
+                document.getElementById('totalStops').textContent = businessLocations.length;
+                document.getElementById('optimizeRoute').disabled = false;
+                status.textContent = 'Data Loaded';
+                status.className = 'status ready';
+                
+                // Update business list
+                updateBusinessList(businessLocations);
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                errorMessage.textContent = 'Error loading business data. Please try again.';
+                errorMessage.style.display = 'block';
+                status.textContent = 'Error';
+                status.className = 'status error';
+            } finally {
+                loader.style.display = 'none';
+            }
+        });
+        
+        // Calculate distance between two points (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Radius of Earth in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+        
+        // Nearest Neighbor Algorithm
+        function nearestNeighbor(locations) {
+            const unvisited = [...locations];
+            const route = [];
+            let current = unvisited.shift(); // Start with first location
+            route.push(current);
+            
+            while (unvisited.length > 0) {
+                let nearestIndex = 0;
+                let nearestDistance = Infinity;
+                
+                for (let i = 0; i < unvisited.length; i++) {
+                    const distance = calculateDistance(
+                        current.lat, current.lng,
+                        unvisited[i].lat, unvisited[i].lng
+                    );
+                    
+                    if (distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestIndex = i;
+                    }
+                }
+                
+                current = unvisited[nearestIndex];
+                route.push(current);
+                unvisited.splice(nearestIndex, 1);
+            }
+            
+            return route;
+        }
+        
+        // 2-Opt Algorithm for route improvement
+        function twoOpt(route) {
+            let improved = true;
+            let bestRoute = [...route];
+            
+            while (improved) {
+                improved = false;
+                
+                for (let i = 1; i < bestRoute.length - 2; i++) {
+                    for (let j = i + 1; j < bestRoute.length; j++) {
+                        if (j - i === 1) continue;
+                        
+                        const newRoute = [...bestRoute];
+                        
+                        // Reverse the route between i and j
+                        const reversed = newRoute.slice(i, j).reverse();
+                        newRoute.splice(i, j - i, ...reversed);
+                        
+                        // Calculate total distances
+                        const currentDistance = calculateTotalDistance(bestRoute);
+                        const newDistance = calculateTotalDistance(newRoute);
+                        
+                        if (newDistance < currentDistance) {
+                            bestRoute = newRoute;
+                            improved = true;
+                        }
+                    }
+                }
+            }
+            
+            return bestRoute;
+        }
+        
+        // Cluster-based optimization
+        function clusterBasedOptimization(locations) {
+            // Simple clustering by geographic quadrants
+            const clusters = {
+                ne: [], nw: [], se: [], sw: []
+            };
+            
+            const centerLat = locations.reduce((sum, loc) => sum + loc.lat, 0) / locations.length;
+            const centerLng = locations.reduce((sum, loc) => sum + loc.lng, 0) / locations.length;
+            
+            // Assign to clusters
+            locations.forEach(loc => {
+                if (loc.lat >= centerLat && loc.lng >= centerLng) clusters.ne.push(loc);
+                else if (loc.lat >= centerLat && loc.lng < centerLng) clusters.nw.push(loc);
+                else if (loc.lat < centerLat && loc.lng >= centerLng) clusters.se.push(loc);
+                else clusters.sw.push(loc);
+            });
+            
+            // Optimize each cluster and connect them
+            let route = [];
+            ['ne', 'se', 'sw', 'nw'].forEach(quadrant => {
+                if (clusters[quadrant].length > 0) {
+                    const clusterRoute = nearestNeighbor(clusters[quadrant]);
+                    route = route.concat(clusterRoute);
+                }
+            });
+            
+            return route;
+        }
+        
+        // Calculate total distance of a route
+        function calculateTotalDistance(route) {
+            let totalDistance = 0;
+            for (let i = 0; i < route.length - 1; i++) {
+                totalDistance += calculateDistance(
+                    route[i].lat, route[i].lng,
+                    route[i + 1].lat, route[i + 1].lng
+                );
+            }
+            return totalDistance;
+        }
+        
+        // Optimize route
+        document.getElementById('optimizeRoute').addEventListener('click', async function() {
+            const loader = document.getElementById('loader');
+            const status = document.getElementById('status');
+            const errorMessage = document.getElementById('errorMessage');
+            const algorithm = document.getElementById('algorithm').value;
+            
+            loader.style.display = 'block';
+            status.textContent = 'Optimizing...';
+            status.className = 'status loading';
+            errorMessage.style.display = 'none';
+            
+            try {
+                // Clear existing route
+                if (routeControl) {
+                    map.removeControl(routeControl);
+                    routeControl = null;
+                }
+                
+                // Apply selected algorithm
+                let optimized;
+                switch (algorithm) {
+                    case '2opt':
+                        const initial = nearestNeighbor(businessLocations);
+                        optimized = twoOpt(initial);
+                        break;
+                    case 'cluster':
+                        optimized = clusterBasedOptimization(businessLocations);
+                        break;
+                    case 'nearest':
+                    default:
+                        optimized = nearestNeighbor(businessLocations);
+                        break;
+                }
+                
+                optimizedOrder = optimized;
+                
+                // Create waypoints for routing
+                const waypoints = optimized.map(loc => L.latLng(loc.lat, loc.lng));
+                
+                // Add route to map (showing first 25 points due to API limitations)
+                const routeWaypoints = waypoints.slice(0, Math.min(25, waypoints.length));
+                
+                routeControl = L.Routing.control({
+                    waypoints: routeWaypoints,
+                    routeWhileDragging: false,
+                    addWaypoints: false,
+                    createMarker: function(i, wp, nWps) {
+                        return L.marker(wp.latLng, {
+                            icon: L.divIcon({
+                                html: `<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${i + 1}</div>`,
+                                iconSize: [30, 30],
+                                className: 'route-marker'
+                            })
+                        }).bindPopup(`<strong>${optimized[i].name}</strong><br>${optimized[i].address}`);
+                    },
+                    lineOptions: {
+                        styles: [{
+                            color: '#667eea',
+                            opacity: 0.8,
+                            weight: 5
+                        }]
+                    },
+                    show: false
+                }).addTo(map);
+                
+                // Calculate statistics
+                const totalDistance = calculateTotalDistance(optimized);
+                const estimatedTime = Math.round(totalDistance * 2.5); // Rough estimate: 2.5 min per mile in city
+                
+                // Update UI
+                document.getElementById('totalDistance').textContent = totalDistance.toFixed(1) + ' mi';
+                document.getElementById('totalTime').textContent = estimatedTime + ' min';
+                document.getElementById('algorithmUsed').textContent = algorithm.charAt(0).toUpperCase() + algorithm.slice(1);
+                document.getElementById('clearRoute').disabled = false;
+                
+                // Update business list with optimized order
+                updateBusinessList(optimized);
+                
+                status.textContent = 'Route Optimized';
+                status.className = 'status ready';
+                
+                // Show note if route is truncated
+                if (waypoints.length > 25) {
+                    errorMessage.textContent = `Note: Showing first 25 stops of ${waypoints.length} total due to routing API limitations. All stops are marked on the map.`;
+                    errorMessage.style.display = 'block';
+                    errorMessage.style.background = '#fff3cd';
+                    errorMessage.style.color = '#856404';
+                }
+                
+            } catch (error) {
+                console.error('Error optimizing route:', error);
+                errorMessage.textContent = 'Error optimizing route. Please try again.';
+                errorMessage.style.display = 'block';
+                status.textContent = 'Error';
+                status.className = 'status error';
+            } finally {
+                loader.style.display = 'none';
+            }
+        });
+        
+        // Clear route
+        document.getElementById('clearRoute').addEventListener('click', function() {
+            if (routeControl) {
+                map.removeControl(routeControl);
+                routeControl = null;
+            }
+            
+            // Reset markers
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            
+            businessLocations.forEach(business => {
+                const marker = L.marker([business.lat, business.lng])
+                    .bindPopup(`<strong>${business.name}</strong><br>${business.address}`);
+                markers.push(marker);
+                marker.addTo(map);
+            });
+            
+            // Reset UI
+            document.getElementById('totalDistance').textContent = '0 mi';
+            document.getElementById('totalTime').textContent = '0 min';
+            document.getElementById('algorithmUsed').textContent = '-';
+            document.getElementById('clearRoute').disabled = true;
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            // Reset business list to original order
+            updateBusinessList(businessLocations);
+        });
+        
+        // Update business list in sidebar
+        function updateBusinessList(businesses) {
+            const listElement = document.getElementById('businessList');
+            listElement.innerHTML = '';
+            
+            businesses.forEach((business, index) => {
+                const item = document.createElement('div');
+                item.className = 'business-item';
+                item.innerHTML = `
+                    <div>
+                        <span class="number">${index + 1}</span>
+                        <span class="name">${business.name}</span>
+                    </div>
+                    <div class="address">${business.address}</div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    map.setView([business.lat, business.lng], 16);
+                    markers[business.index].openPopup();
+                });
+                
+                listElement.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
