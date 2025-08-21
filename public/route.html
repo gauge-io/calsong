@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CalSong Bicycle Route Optimizer</title>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
@@ -24,6 +24,8 @@
             min-height: 100vh;
             color: #ffffff;
         }
+        
+        /* Desktop styles */
         .container {
             max-width: 1600px;
             margin: 0 auto;
@@ -94,6 +96,142 @@
             flex-direction: column;
             height: 100%;
             overflow: hidden;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+                height: auto;
+                min-height: 100vh;
+            }
+            
+            .header {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                padding: 15px 20px;
+                margin-bottom: 0;
+                position: sticky;
+                top: 0;
+                z-index: 1001;
+            }
+            
+            h1 {
+                font-size: 20px;
+                flex-wrap: wrap;
+            }
+            
+            h1 .emoji {
+                font-size: 24px;
+            }
+            
+            .main-content {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                height: auto;
+            }
+            
+            #map {
+                position: sticky;
+                top: 80px; /* Height of header */
+                height: 50vh;
+                width: 100%;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                z-index: 1000;
+            }
+            
+            .sidebar {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+                padding: 15px;
+                height: auto;
+                min-height: 50vh;
+                margin-top: -1px; /* Overlap border */
+            }
+            
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .stat-card {
+                padding: 10px;
+            }
+            
+            .stat-label {
+                font-size: 10px;
+            }
+            
+            .stat-value {
+                font-size: 18px;
+            }
+            
+            .update-route-btn {
+                padding: 14px;
+                font-size: 16px;
+                position: sticky;
+                top: calc(80px + 50vh + 10px);
+                z-index: 999;
+                background: #ffffff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            }
+            
+            .business-list {
+                flex: 1;
+                padding-bottom: 20px;
+            }
+            
+            .business-list h3 {
+                font-size: 16px;
+                margin: 15px 0 10px 0;
+            }
+            
+            .business-list-scroll {
+                max-height: none;
+                overflow: visible;
+                padding-right: 0;
+            }
+            
+            .business-item {
+                padding: 12px 10px;
+                margin-bottom: 6px;
+            }
+            
+            .business-number {
+                width: 24px;
+                height: 24px;
+                font-size: 11px;
+            }
+            
+            .business-name {
+                font-size: 14px;
+            }
+            
+            .business-address {
+                font-size: 11px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 18px;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .stat-value {
+                font-size: 16px;
+            }
         }
         .stats {
             display: grid;
@@ -280,7 +418,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚴 CalSong Bicycle Route Optimizer</h1>
+            <h1><span class="emoji">🚴</span> CalSong Bicycle Route Optimizer</h1>
             <div id="status" class="status loading">Initializing HERE Maps...</div>
         </div>
 
