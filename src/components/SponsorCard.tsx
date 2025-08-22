@@ -26,7 +26,14 @@ export function SponsorCard({
             <span>{benefit}</span>
           </li>)}
       </ul>
-      <a href={url} className={`w-full py-3 px-6 rounded-md font-bold text-center ${featured ? 'bg-orange-500 text-white hover:bg-orange-600' : 'bg-gray-800 hover:bg-gray-700'}`}>
+      <a 
+        href={url} 
+        className={`block w-full py-3 px-6 rounded-md font-bold text-center transition-colors cursor-pointer no-underline ${
+          featured 
+            ? 'bg-orange-500 text-white hover:bg-orange-600' 
+            : 'bg-gray-800 text-white hover:bg-gray-700'
+        }`}
+      >
         Become a Sponsor
       </a>
     </div>;
