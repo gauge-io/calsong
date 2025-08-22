@@ -6,19 +6,19 @@ export function SponsorshipTiers() {
     price: '$100',
     benefits: ['Recognition on day-of promotional materials', 'Promotion as a sponsor on festival website'],
     featured: false,
-    url: 'https://fundraiseup.com/1234'
+    url: 'mailto:steve.a.perez@gmail.com?cc=nick@calsong.org&subject=CalSong%20Sponsorship%20-%20Creature%20Feature%20Tier'
   }, {
     title: 'Spooky Spotlight',
     price: '$250',
     benefits: ['Logo placement on main stage backdrop', 'Promotion as a sponsor on festival website and Digifly', 'Recognition on day-of promotional materials', 'Company mentions during all announcements'],
     featured: false,
-    url: 'https://fundraiseup.com/5678'
+    url: 'mailto:steve.a.perez@gmail.com?cc=nick@calsong.org&subject=CalSong%20Sponsorship%20-%20Spooky%20Spotlight%20Tier'
   }, {
     title: 'Main Stage Monster',
     price: '$500',
     benefits: ['Premium logo placement on main stage backdrop (largest size)', '5-minute speaking opportunity between acts', 'Promotion as title sponsor on festival website and Digifly', 'Recognition on day-of promotional materials', 'Option to perform with the headlining band'],
     featured: true,
-    url: 'https://fundraiseup.com/9012'
+    url: 'mailto:steve.a.perez@gmail.com?cc=nick@calsong.org&subject=CalSong%20Sponsorship%20-%20Main%20Stage%20Monster%20Tier'
   }];
   return <section className="mb-16">
       <h2 className="text-3xl font-bold text-center mb-8">Sponsorship Tiers</h2>
