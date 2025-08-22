@@ -2,7 +2,7 @@ import React from 'react';
 export function EventInfo() {
   return <section className="mb-12 grid md:grid-cols-2 gap-8 items-stretch">
       <div className="flex items-center justify-center">
-        <img src="/skeleton-musician-optimized.png" alt="Skeleton musician illustration" className="object-contain border-5 border-white" style={{ maxHeight: '500px', width: 'auto' }} />
+        <img src="/calsong-sponsor.png" alt="CalSong sponsor illustration" className="object-contain border-5 border-white" style={{ maxHeight: '500px', width: 'auto' }} />
       </div>
       <div>
         <h2 className="text-2xl font-bold mb-4">About the Event</h2>
