@@ -1,14 +1,14 @@
 import React from 'react';
-import { EventInfo } from './components/EventInfo';
-import { SponsorshipTiers } from './components/SponsorshipTiers';
-import { ContactSection } from './components/ContactSection';
 export function App() {
-  return <div className="min-h-screen w-full">
-      <section className="bg-white text-black">
+  return <div className="min-h-screen w-full bg-white text-black">
+      <section>
         <div className="max-w-3xl mx-auto px-4 py-12 text-center">
           <h1 className="font-serif text-5xl md:text-7xl font-semibold tracking-tight">
             CalSong
           </h1>
+          <h6 className="mt-4 font-serif text-base md:text-lg font-normal">
+            Enriching community through music education.
+          </h6>
           <img
             src="/calsong-quail.jpg"
             alt="Woodcut of a California quail"
@@ -20,25 +20,10 @@ export function App() {
             className="mx-auto mt-10 w-full max-w-3xl h-auto"
             style={{ filter: 'invert(1)' }}
           />
+          <p className="mt-6 text-xs text-neutral-600">
+            Quail illustration by Corrinne Green
+          </p>
         </div>
       </section>
-      <div className="bg-black text-white w-full">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <EventInfo />
-        <SponsorshipTiers />
-        
-        {/* Franklin Park Halloween 2025 Image */}
-        <div className="my-16 flex justify-center">
-          <img 
-            src="/franklin-park-halloween-2025.png" 
-            alt="Franklin Park Halloween 2025" 
-            className="h-auto" 
-            style={{ width: '60%', maxWidth: '100%' }}
-          />
-        </div>
-        
-        <ContactSection />
-      </div>
-      </div>
     </div>;
 }
