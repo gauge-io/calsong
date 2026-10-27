@@ -1,12 +1,29 @@
 import React from 'react';
-import { Header } from './components/Header';
-import { SponsorshipTiers } from './components/SponsorshipTiers';
 import { EventInfo } from './components/EventInfo';
+import { SponsorshipTiers } from './components/SponsorshipTiers';
 import { ContactSection } from './components/ContactSection';
 export function App() {
-  return <div className="bg-black text-white min-h-screen w-full">
+  return <div className="min-h-screen w-full">
+      <section className="bg-white text-black">
+        <div className="max-w-3xl mx-auto px-4 py-12 text-center">
+          <h1 className="font-serif text-5xl md:text-7xl font-semibold tracking-tight">
+            CalSong
+          </h1>
+          <img
+            src="/calsong-quail.jpg"
+            alt="Woodcut of a California quail"
+            className="mx-auto mt-8 w-full max-w-md h-auto"
+          />
+          <img
+            src="/calsong-footer.jpg"
+            alt="Steve Perez, (646) 765 7715, steve.a.perez@gmail.com. Nick Cawthon, (510) 542 7364, nick@calsong.org."
+            className="mx-auto mt-10 w-full max-w-3xl h-auto"
+            style={{ filter: 'invert(1)' }}
+          />
+        </div>
+      </section>
+      <div className="bg-black text-white w-full">
       <div className="max-w-5xl mx-auto px-4 py-8">
-        <Header />
         <EventInfo />
         <SponsorshipTiers />
         
@@ -21,18 +38,7 @@ export function App() {
         </div>
         
         <ContactSection />
-        
-        {/* Footer with Ornamental Suns */}
-        <footer className="mt-16 pb-8">
-          <div className="flex justify-center">
-            <img 
-              src="/ornamental-suns.png" 
-              alt="Ornamental decoration" 
-              className="max-w-xs h-auto" 
-              style={{ filter: 'invert(1)' }}
-            />
-          </div>
-        </footer>
+      </div>
       </div>
     </div>;
 }
