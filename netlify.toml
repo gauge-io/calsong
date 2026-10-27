@@ -5,6 +5,38 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# DNS cannot point at a path. calsong.org already points at this site.
+# /BRC is proxied to the dome shop.
+[[redirects]]
+  from = "/brc"
+  to = "/BRC/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/brc/*"
+  to = "/BRC/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/BRC"
+  to = "/BRC/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/BRC/"
+  to = "https://personal-geodesic-dome.netlify.app/BRC/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/BRC/*"
+  to = "https://personal-geodesic-dome.netlify.app/BRC/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/sponsor"
   to = "/"
