@@ -14,7 +14,7 @@ export function App() {
             alt="Woodcut of a California quail"
             className="mx-auto mt-8 w-full max-w-md h-auto"
           />
-          <div className="mt-12 grid gap-10 sm:grid-cols-2 text-center font-serif">
+          <div className="mt-12 grid grid-cols-2 gap-6 text-center font-serif">
             <div>
               <h2 className="text-2xl font-semibold">Steve Perez</h2>
               <p className="mt-3">(646) 765 7715</p>
