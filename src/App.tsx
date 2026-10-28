@@ -14,10 +14,30 @@ export function App() {
             alt="Woodcut of a California quail"
             className="mx-auto mt-8 w-full max-w-md h-auto"
           />
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 text-center font-serif">
+            <div>
+              <h2 className="text-2xl font-semibold">Steve Perez</h2>
+              <p className="mt-3">(646) 765 7715</p>
+              <p className="mt-2">
+                <a href="mailto:steve.a.perez@gmail.com" className="underline underline-offset-4">
+                  steve.a.perez@gmail.com
+                </a>
+              </p>
+            </div>
+            <div>
+              <h2 className="text-2xl font-semibold">Nick Cawthon</h2>
+              <p className="mt-3">(510) 542 7364</p>
+              <p className="mt-2">
+                <a href="mailto:nick@calsong.org" className="underline underline-offset-4">
+                  nick@calsong.org
+                </a>
+              </p>
+            </div>
+          </div>
           <img
-            src="/calsong-footer.jpg"
-            alt="Steve Perez, (646) 765 7715, steve.a.perez@gmail.com. Nick Cawthon, (510) 542 7364, nick@calsong.org."
-            className="mx-auto mt-10 w-full max-w-3xl h-auto"
+            src="/calsong-ornaments.png"
+            alt=""
+            className="mx-auto mt-10 h-auto w-full max-w-sm"
             style={{ filter: 'invert(1)' }}
           />
           <p className="mt-6 text-xs text-neutral-600">
