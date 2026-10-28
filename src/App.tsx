@@ -7,7 +7,7 @@ export function App() {
             CalSong
           </h1>
           <h6 className="mt-4 font-serif text-base md:text-lg font-normal">
-            Enriching community through music education.
+            A 5013c that enriches community through music education.
           </h6>
           <img
             src="/calsong-quail.jpg"
